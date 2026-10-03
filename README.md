@@ -40,6 +40,7 @@ and `Ω(Ψ)` the matrix of `½ ⟨i[A, B]⟩`; `Ω_nrs` multiplies the block of 
 
 | Statement | Lean |
 |---|---|
+| Robertson 1934 on the whole cube, at every state: `det Ω(Ψ) ≤ det Σ(Ψ)` | `robertson_cube` |
 | Robertson–Schrödinger on each axis, at every state: `det Ω_axis ≤ det Σ_axis` | `robertson_axis` |
 | `Ω(Ψ)` is block diagonal at every state: only `T` and `P` of the same axis collide | `omega_eq_blockDiagonal` |
 | at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*`, `Σ(Ψ*)` is block diagonal too | `sigma_psiStar_eq_blockDiagonal` |
@@ -49,8 +50,8 @@ and `Ω(Ψ)` the matrix of `½ ⟨i[A, B]⟩`; `Ω_nrs` multiplies the block of 
 | `det Ω(Ψ*) < det Σ(Ψ*)` as soon as one axis has `4` or more sites | `det_omega_lt_det_sigma_psiStar` |
 | at `4 × 4 × 4`: `det Σ(Ψ*) = ((99 − 42√5)/5)³ · det Ω(Ψ*) ≈ 1.0520 · det Ω(Ψ*)` | `det_sigma_psiStar_four` |
 
-The full `6 × 6` inequality `det Ω(Ψ) ≤ det Σ(Ψ)` at an arbitrary state (Robertson 1934) is not
-formalized; it is proved here axis by axis at every state and for the whole matrix at `Ψ*`.
+`Σ − iΩ` is the Gram matrix of the six fluctuation vectors and `Σ + iΩ` its transpose; both are
+positive semidefinite, and that gives `|det Ω| ≤ det Σ` (`abs_det_le_det`).
 
 The Friedmann equations, the de Sitter scale factor `a₀ exp(σ √(Λ/3) c t)` and its Hubble rate
 are Physlib's (`Physlib.Cosmology.FLRW`). The length `ℓ` is a parameter: the Planck length in the
