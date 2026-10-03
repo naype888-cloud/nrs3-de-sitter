@@ -31,3 +31,6 @@ open NRSDeterminant
 #print axioms det_omega_eq_det_sigma_psiStar
 #print axioms det_omega_lt_det_sigma_psiStar
 #print axioms det_sigma_psiStar_four
+#print axioms norm_det_le_re_det
+#print axioms abs_det_le_det
+#print axioms robertson_cube
