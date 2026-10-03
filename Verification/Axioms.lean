@@ -18,3 +18,16 @@ open Cosmology.FLRW.FriedmannEquation
 #print axioms einsteinHilbertLambdaDensity_entropyCosmologicalConstant
 #print axioms vacuumEnergyDensity_entropyCosmologicalConstant
 #print axioms vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn
+
+open NRSDeterminant
+
+#print axioms robertson_pair
+#print axioms robertson_axis
+#print axioms omega_eq_blockDiagonal
+#print axioms det_omega
+#print axioms sigma_psiStar_eq_blockDiagonal
+#print axioms det_sigma_psiStar
+#print axioms det_sigma_psiStar_eq_det_omegaNRS
+#print axioms det_omega_eq_det_sigma_psiStar
+#print axioms det_omega_lt_det_sigma_psiStar
+#print axioms det_sigma_psiStar_four
