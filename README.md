@@ -30,6 +30,28 @@ In the action `∫ d⁴x e [ c⁴/(16πG) (R − 2Λ) + ψ̄(iħc γ^a e_a^μ �
 only through the vacuum term: `R − 2Λ = R − 6π / (ℓ_P² S)`. The Lagrangian statements are pointwise
 in the density; the integral, the curvature of the metric and the Dirac term are not formalized.
 
+### The condition on the state: `det Ω_nrs ≤ det Σ`
+
+The uncertainty condition is not a term of the action: an action is varied over field
+configurations, and the inequality restricts the state in which it is evaluated. On the cube
+`H_dx ⊗ H_dy ⊗ H_dz`, `Σ(Ψ)` is the `6 × 6` covariance matrix of `(T_x, P_x, T_y, P_y, T_z, P_z)`
+and `Ω(Ψ)` the matrix of `½ ⟨i[A, B]⟩`; `Ω_nrs` multiplies the block of each axis by
+`C_Nava(d_axis)`.
+
+| Statement | Lean |
+|---|---|
+| Robertson–Schrödinger on each axis, at every state: `det Ω_axis ≤ det Σ_axis` | `robertson_axis` |
+| `Ω(Ψ)` is block diagonal at every state: only `T` and `P` of the same axis collide | `omega_eq_blockDiagonal` |
+| at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*`, `Σ(Ψ*)` is block diagonal too | `sigma_psiStar_eq_blockDiagonal` |
+| `det Σ(Ψ*) = (C_Nava(dx) C_Nava(dy) C_Nava(dz))² · det Ω(Ψ*)` | `det_sigma_psiStar` |
+| `det Σ(Ψ*) = det Ω_nrs(Ψ*)`: the condition holds at `Ψ*` with equality | `det_sigma_psiStar_eq_det_omegaNRS` |
+| `det Ω(Ψ*) = det Σ(Ψ*)` with `2` or `3` sites on every axis | `det_omega_eq_det_sigma_psiStar` |
+| `det Ω(Ψ*) < det Σ(Ψ*)` as soon as one axis has `4` or more sites | `det_omega_lt_det_sigma_psiStar` |
+| at `4 × 4 × 4`: `det Σ(Ψ*) = ((99 − 42√5)/5)³ · det Ω(Ψ*) ≈ 1.0520 · det Ω(Ψ*)` | `det_sigma_psiStar_four` |
+
+The full `6 × 6` inequality `det Ω(Ψ) ≤ det Σ(Ψ)` at an arbitrary state (Robertson 1934) is not
+formalized; it is proved here axis by axis at every state and for the whole matrix at `Ψ*`.
+
 The Friedmann equations, the de Sitter scale factor `a₀ exp(σ √(Λ/3) c t)` and its Hubble rate
 are Physlib's (`Physlib.Cosmology.FLRW`). The length `ℓ` is a parameter: the Planck length in the
 figures.
@@ -44,7 +66,8 @@ With the observed `Λ = 1.106 × 10⁻⁵² m⁻²` (Planck 2018) the horizon en
 
 ### In NRS³
 
-The theorems hold for every `S > 0`; they do not use the pair `T_d : P_d`. The relation
+The de Sitter theorems hold for every `S > 0`; they do not use the pair `T_d : P_d`. The state
+condition does: it is the pair `(T_d, P_d)` of each axis of the cube. The relation
 `Λ = 3π / (ℓ_P² S)` is an identity for the de Sitter horizon. It becomes a prediction of `Λ` only
 when `S = log W` is counted from NRS³ without using `Λ`; that count is not written here.
 
@@ -57,8 +80,10 @@ tied them to the recession of galaxies. Boltzmann and Planck (1900–1906) wrote
 
 ## Build
 
-Lean 4 `v4.34.1` and [Physlib](https://github.com/leanprover-community/physlib) at
-`1433e0de` (it brings Mathlib `v4.34.1`).
+Lean 4 `v4.34.0` and the
+[base repository](https://github.com/naype888-cloud/nava-robertson-schrodinger) at `3bb4d4eb`
+(it brings [Physlib](https://github.com/leanprover-community/physlib) at `1c81053a` and Mathlib
+`v4.34.0`).
 
 ```bash
 lake exe cache get
