@@ -14,3 +14,7 @@ open Cosmology.FLRW.FriedmannEquation
 #print axioms entropyCosmologicalConstant_secondOrderFriedmann
 #print axioms sq_hubbleConstant_entropyCosmologicalConstant
 #print axioms entropyCosmologicalConstant_strictAntiOn
+#print axioms einsteinHilbertLambdaDensity_zero
+#print axioms einsteinHilbertLambdaDensity_entropyCosmologicalConstant
+#print axioms vacuumEnergyDensity_entropyCosmologicalConstant
+#print axioms vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn

@@ -22,6 +22,13 @@ smaller `Λ`.
 | it solves both Friedmann equations (`ρ = 0`, `p = 0`, `k = 0`) | `entropyCosmologicalConstant_firstOrderFriedmann`, `entropyCosmologicalConstant_secondOrderFriedmann` |
 | `H² = π c² / (ℓ² S)` | `sq_hubbleConstant_entropyCosmologicalConstant` |
 | `Λ` is strictly decreasing in `S` | `entropyCosmologicalConstant_strictAntiOn` |
+| the vacuum term of `c⁴/(16πG) (R − 2Λ)` is `R − 6π / (ℓ² S)`; the coefficient of `R` does not depend on `S` | `einsteinHilbertLambdaDensity_entropyCosmologicalConstant` |
+| at `R = 0` the density is `−ρ_Λ c²`, with `ρ_Λ c² = Λ c⁴ / (8πG)` | `einsteinHilbertLambdaDensity_zero` |
+| `ρ_Λ c² = 3 c⁴ / (8 G ℓ² S)`, strictly decreasing in `S` | `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn` |
+
+In the action `∫ d⁴x e [ c⁴/(16πG) (R − 2Λ) + ψ̄(iħc γ^a e_a^μ ∇_μ − mc²)ψ ]` the entropy enters
+only through the vacuum term: `R − 2Λ = R − 6π / (ℓ_P² S)`. The Lagrangian statements are pointwise
+in the density; the integral, the curvature of the metric and the Dirac term are not formalized.
 
 The Friedmann equations, the de Sitter scale factor `a₀ exp(σ √(Λ/3) c t)` and its Hubble rate
 are Physlib's (`Physlib.Cosmology.FLRW`). The length `ℓ` is a parameter: the Planck length in the
