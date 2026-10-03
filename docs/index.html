@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>de Sitter horizon, interactive</title>
+<meta name="description" content="Λ = 3π/(ℓ_P² S): the de Sitter horizon, its entropy, the Hubble rate and the scale factor, each value tied to its Lean lemma.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<style>
+/* Layout: one instrument column — control strip on top, live readouts, three linked plots, then the Lean ledger and the static figures. */
+:root {
+  --bg: #fcfcfb; --panel: #ffffff; --fg: #0b0b0b; --mut: #52514e; --line: #e4e3df;
+  --accent: #2a78d6; --warm: #eb6834; --ok: #1f7a4d; --code: #f1f0ec;
+  --display: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111110; --panel: #191918; --fg: #f2f1ee; --mut: #c4c3bf; --line: #2c2b29;
+  --accent: #5b9be6; --warm: #f08a5d; --ok: #5cc98f; --code: #1f1f1d; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111110; --panel: #191918; --fg: #f2f1ee; --mut: #c4c3bf; --line: #2c2b29;
+  --accent: #5b9be6; --warm: #f08a5d; --ok: #5cc98f; --code: #1f1f1d; color-scheme: dark }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 var(--body); }
+.meta a { color: var(--accent); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; display: grid; gap: 28px; }
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 700; }
+h2 { font-size: 1.3rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font: 600 .74rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+header { display: grid; gap: 10px; }
+.formula { font-family: var(--mono); font-size: 1.05rem; color: var(--accent); }
+.mut { color: var(--mut); }
+code, .mono { font-family: var(--mono); font-size: .86em; }
+code { background: var(--code); padding: 1px 5px; border-radius: 4px; }
+
+.controls { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 14px; }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+.ctl-row label { font-weight: 600; }
+input[type="range"] { flex: 1 1 320px; min-width: 0; accent-color: var(--accent); }
+.sval { font-family: var(--mono); font-variant-numeric: tabular-nums; min-width: 12ch; }
+button, .seg label { font: 600 .9rem var(--body); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button:hover, .seg label:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible + label, input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.seg { display: inline-flex; gap: 6px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg input:checked + label { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+
+.readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.ro { background: var(--panel); padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.ro .k { font: 600 .72rem var(--mono); color: var(--mut); letter-spacing: .04em; }
+.ro .v { font: 500 1.12rem var(--mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ro .u { font-size: .8rem; color: var(--mut); }
+.ro.check .v { color: var(--ok); }
+
+.plots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 18px; }
+.plot { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; min-width: 0; }
+.plot .cap { font: .78rem var(--mono); color: var(--mut); padding: 2px 6px 6px; overflow-wrap: anywhere; }
+.plot .chart { width: 100%; height: 340px; }
+.plot.wide { grid-column: 1 / -1; }
+
+.ledger { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 .74rem var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--mut); }
+tr:last-child td { border-bottom: 0; }
+td.name { font-family: var(--mono); font-size: .82rem; color: var(--accent); white-space: nowrap; }
+.pill { font: 600 .72rem var(--mono); color: var(--ok); border: 1px solid var(--ok); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font: .82rem var(--mono); color: var(--mut); }
+
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.figs figure { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+.figs img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.figs figcaption { font-size: .82rem; color: var(--mut); padding: 6px 4px 2px; }
+.note { border-left: 3px solid var(--warm); padding: 4px 0 4px 14px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <span class="eyebrow">NRS³ · de Sitter · Lean 4 + Physlib</span>
+    <h1>The de Sitter horizon</h1>
+    <p class="formula">Λ = 3π / (ℓ<sub>P</sub>² S) &nbsp;⟺&nbsp; S = A / (4ℓ<sub>P</sub>²), &nbsp; A = 4π r<sub>H</sub>², &nbsp; r<sub>H</sub> = √(3/Λ) = c/|H|</p>
+    <p class="mut">Move the entropy S of the horizon and watch the cosmological constant, the horizon radius, the Hubble rate and the scale factor follow. Every number is tied to the Lean lemma that proves it.</p>
+    <div class="meta"><a href="https://github.com/naype888-cloud/nrs3-de-sitter">github.com/naype888-cloud/nrs3-de-sitter</a><span>NRS3DeSitter/DeSitterHorizon.lean</span><span>no sorry · axioms propext, Classical.choice, Quot.sound</span></div>
+  </header>
+
+  <section class="controls" aria-label="Controls">
+    <div class="ctl-row">
+      <label for="logS">log₁₀ S/k<sub>B</sub></label>
+      <input id="logS" type="range" min="100" max="130" step="0.001" value="122.5137">
+      <span class="sval" id="logSval">122.514</span>
+    </div>
+    <div class="ctl-row">
+      <button id="obs" type="button">Observed value (Planck 2018)</button>
+      <span class="mut">branch σ</span>
+      <span class="seg" role="radiogroup" aria-label="Branch σ">
+        <input type="radio" name="sigma" id="sigP" value="1" checked><label for="sigP">σ = +1 expanding</label>
+        <input type="radio" name="sigma" id="sigM" value="-1"><label for="sigM">σ = −1 contracting</label>
+      </span>
+    </div>
+  </section>
+
+  <section class="readouts" aria-live="polite">
+    <div class="ro"><span class="k">Λ</span><span class="v" id="rLam"></span><span class="u">m⁻² · entropyCosmologicalConstant</span></div>
+    <div class="ro"><span class="k">r_H = √(3/Λ)</span><span class="v" id="rR"></span><span class="u" id="rRu"></span></div>
+    <div class="ro"><span class="k">A = 12π/Λ</span><span class="v" id="rA"></span><span class="u">m² · deSitterHorizonArea_eq</span></div>
+    <div class="ro"><span class="k">H = σ√(Λ/3)c</span><span class="v" id="rH"></span><span class="u" id="rHu"></span></div>
+    <div class="ro check"><span class="k">S(Λ(S)) / S</span><span class="v" id="rRT"></span><span class="u">deSitterEntropy_entropyCosmologicalConstant</span></div>
+    <div class="ro check"><span class="k">H² − πc²/(ℓ²S)</span><span class="v" id="rF"></span><span class="u">sq_hubbleConstant_entropyCosmologicalConstant (relative)</span></div>
+  </section>
+
+  <section class="plots">
+    <div class="plot"><div class="cap">Λ(S) · cosmologicalConstant_eq_of_deSitterEntropy · entropyCosmologicalConstant_strictAntiOn</div><div class="chart" id="pLam"></div></div>
+    <div class="plot"><div class="cap">r_H and H² against S · deSitterHorizonRadius_eq_div_abs_hubbleConstant</div><div class="chart" id="pRH"></div></div>
+    <div class="plot wide"><div class="cap">a(t)/a₀ = exp(σ√(Λ/3)c t) · entropyCosmologicalConstant_first/secondOrderFriedmann (ρ = 0, p = 0, k = 0)</div><div class="chart" id="pA"></div></div>
+  </section>
+
+  <section style="display:grid;gap:12px">
+    <h2>What Lean proves</h2>
+    <div class="ledger">
+      <table>
+        <thead><tr><th>Lemma</th><th>Statement</th><th>Hypotheses</th></tr></thead>
+        <tbody>
+          <tr><td class="name">deSitterHorizonArea_eq</td><td>A = 12π/Λ</td><td>0 &lt; Λ</td></tr>
+          <tr><td class="name">deSitterHorizonRadius_eq_div_abs_hubbleConstant</td><td>r<sub>H</sub> = c / |H| on the de Sitter solution</td><td>0 &lt; Λ, 0 &lt; c, a₀ ≠ 0, σ = ±1</td></tr>
+          <tr><td class="name">deSitterEntropy_eq</td><td>S = 3π / (ℓ² Λ)</td><td>0 &lt; Λ</td></tr>
+          <tr><td class="name">deSitterEntropy_pos</td><td>0 &lt; S</td><td>0 &lt; Λ, ℓ ≠ 0</td></tr>
+          <tr><td class="name">cosmologicalConstant_eq_of_deSitterEntropy</td><td>Λ = 3π / (ℓ² S)</td><td>0 &lt; Λ, ℓ ≠ 0</td></tr>
+          <tr><td class="name">deSitterEntropy_entropyCosmologicalConstant</td><td>the constant 3π/(ℓ²S) has horizon entropy exactly S</td><td>0 &lt; S, ℓ ≠ 0</td></tr>
+          <tr><td class="name">entropyCosmologicalConstant_firstOrderFriedmann</td><td>de Sitter with Λ = 3π/(ℓ²S) solves the first Friedmann equation</td><td>0 &lt; S, ℓ ≠ 0, a₀ ≠ 0, σ = ±1</td></tr>
+          <tr><td class="name">entropyCosmologicalConstant_secondOrderFriedmann</td><td>and the second Friedmann equation</td><td>same</td></tr>
+          <tr><td class="name">sq_hubbleConstant_entropyCosmologicalConstant</td><td>H² = π c² / (ℓ² S)</td><td>same</td></tr>
+          <tr><td class="name">entropyCosmologicalConstant_strictAntiOn</td><td>Λ is strictly decreasing in S on (0, ∞)</td><td>ℓ ≠ 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The relation is the Gibbons–Hawking entropy (1977) of the de Sitter horizon. With the observed Λ it gives S ≈ 3.26 × 10¹²². It becomes a prediction only when S = log W is counted independently, without using Λ.</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  const lP = 1.616255e-35, c = 299792458, Mpc = 3.0856775814913673e22, Gly = 9.4607304725808e24, Gyr = 3.15576e16;
+  const LamObs = 1.1056e-52;
+  const SObs = 3 * Math.PI / (lP * lP * LamObs);
+  // work in log10 to stay inside double range
+  const log10Lam = ls => Math.log10(3 * Math.PI) - 2 * Math.log10(lP) - ls;
+  const sup = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+  const sci = (lg, d = 4) => { let e = Math.floor(lg), m = Math.pow(10, lg - e); if (m >= 9.99995) { m /= 10; e += 1; }
+    return m.toFixed(d - 1) + " × 10" + String(e).split("").map(ch => sup[ch]).join(""); };
+  const $ = id => document.getElementById(id);
+  const slider = $("logS");
+  let sigma = 1;
+
+  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  function layout(xt, yt, ylog, xlog, extra) {
+    const fg = css("--fg"), mut = css("--mut"), line = css("--line");
+    const ax = (t, log) => ({ title: { text: t, font: { color: fg, size: 12 } }, type: log ? "log" : "linear",
+      exponentformat: "power", gridcolor: line, zerolinecolor: line, linecolor: mut, tickfont: { color: mut, size: 11 } });
+    return Object.assign({ paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)", font: { family: "system-ui, sans-serif", color: fg },
+      margin: { l: 64, r: 24, t: 10, b: 50 }, xaxis: ax(xt, xlog), yaxis: ax(yt, ylog), showlegend: true,
+      legend: { orientation: "h", y: -0.24, font: { size: 11, color: fg } }, hoverlabel: { font: { family: "ui-monospace, monospace" } } }, extra || {});
+  }
+  const cfg = { responsive: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d"] };
+
+  const SS = []; for (let x = 100; x <= 130.0001; x += 0.1) SS.push(x);
+  function draw() {
+    const acc = css("--accent"), warm = css("--warm"), mut = css("--mut");
+    const ls = parseFloat(slider.value);
+    const lLam = log10Lam(ls);
+    // Λ(S)
+    Plotly.react("pLam", [
+      { x: SS.map(s => Math.pow(10, s)), y: SS.map(s => Math.pow(10, log10Lam(s))), mode: "lines", name: "Λ = 3π/(ℓ²S)", line: { color: acc, width: 2.5 },
+        hovertemplate: "S = %{x:.3e}<br>Λ = %{y:.3e} m⁻²<extra></extra>" },
+      { x: [SObs], y: [LamObs], mode: "markers", name: "Planck 2018", marker: { color: mut, size: 9, symbol: "diamond" },
+        hovertemplate: "observed<br>S = %{x:.4e}<br>Λ = %{y:.4e} m⁻²<extra></extra>" },
+      { x: [Math.pow(10, ls)], y: [Math.pow(10, lLam)], mode: "markers", name: "chosen S", marker: { color: warm, size: 12, line: { color: css("--panel"), width: 2 } },
+        hovertemplate: "S = %{x:.4e}<br>Λ = %{y:.4e} m⁻²<extra></extra>" }
+    ], layout("horizon entropy S/k_B", "Λ [m⁻²]", true, true), cfg);
+    // r_H and H^2
+    const sub = SS.filter(s => s >= 108);
+    const rG = s => 0.5 * (Math.log10(3) - log10Lam(s)) - Math.log10(Gly);
+    const H2 = s => Math.log10(Math.PI) + 2 * Math.log10(c) - 2 * Math.log10(lP) - s;
+    Plotly.react("pRH", [
+      { x: sub.map(s => Math.pow(10, s)), y: sub.map(s => Math.pow(10, rG(s))), mode: "lines", name: "r_H [Gly]", line: { color: acc, width: 2.5 },
+        hovertemplate: "S = %{x:.3e}<br>r_H = %{y:.4g} Gly<extra></extra>" },
+      { x: sub.map(s => Math.pow(10, s)), y: sub.map(s => Math.pow(10, H2(s))), mode: "lines", name: "H² [s⁻²]", yaxis: "y2", line: { color: warm, width: 2.5, dash: "dash" },
+        hovertemplate: "S = %{x:.3e}<br>H² = %{y:.4e} s⁻²<extra></extra>" },
+      { x: [Math.pow(10, ls)], y: [Math.pow(10, rG(ls))], mode: "markers", name: "chosen S", showlegend: false, marker: { color: acc, size: 11, line: { color: css("--panel"), width: 2 } },
+        hovertemplate: "r_H = %{y:.4g} Gly<extra></extra>" },
+      { x: [Math.pow(10, ls)], y: [Math.pow(10, H2(ls))], yaxis: "y2", mode: "markers", showlegend: false, marker: { color: warm, size: 11, line: { color: css("--panel"), width: 2 } },
+        hovertemplate: "H² = %{y:.4e} s⁻²<extra></extra>" }
+    ], layout("horizon entropy S/k_B", "r_H [Gly]", true, true, {
+      margin: { l: 64, r: 70, t: 10, b: 50 },
+      yaxis2: { type: "log", overlaying: "y", side: "right", exponentformat: "power", title: { text: "H² [s⁻²]", font: { color: css("--fg"), size: 12 } },
+        tickfont: { color: mut, size: 11 }, gridcolor: "rgba(0,0,0,0)", linecolor: mut } }), cfg);
+    // a(t)
+    const H = sigma * Math.sqrt(Math.pow(10, lLam) / 3) * c;
+    const Hobs = Math.sqrt(LamObs / 3) * c;
+    const tt = []; for (let t = -30; t <= 30.0001; t += 0.25) tt.push(t);
+    const lim = x => Math.min(Math.max(x, -300), 300);
+    Plotly.react("pA", [
+      { x: tt, y: tt.map(t => Math.exp(lim(H * t * Gyr))), mode: "lines", name: "chosen S, σ = " + (sigma > 0 ? "+1" : "−1"), line: { color: warm, width: 2.5 },
+        hovertemplate: "t = %{x:.2f} Gyr<br>a/a₀ = %{y:.4g}<extra></extra>" },
+      { x: tt, y: tt.map(t => Math.exp(Hobs * t * Gyr)), mode: "lines", name: "observed S, σ = +1", line: { color: mut, width: 1.5, dash: "dot" },
+        hovertemplate: "t = %{x:.2f} Gyr<br>a/a₀ = %{y:.4g}<extra></extra>" }
+    ], layout("t [Gyr]", "a(t)/a₀", true, false), cfg);
+
+    // readouts
+    $("logSval").textContent = ls.toFixed(3);
+    $("rLam").textContent = sci(lLam);
+    const lr = 0.5 * (Math.log10(3) - lLam);
+    $("rR").textContent = sci(lr) + " m";
+    $("rRu").textContent = sci(lr - Math.log10(Gly), 4) + " Gly · c/|H|";
+    $("rA").textContent = sci(Math.log10(12 * Math.PI) - lLam);
+    const lH = 0.5 * (lLam - Math.log10(3)) + Math.log10(c);
+    $("rH").textContent = (sigma < 0 ? "−" : "") + sci(lH) + " s⁻¹";
+    $("rHu").textContent = (sigma < 0 ? "−" : "") + sci(lH + Math.log10(Mpc / 1000), 4) + " km/s/Mpc";
+    // round trip in log space: S' = 3π/(ℓ²Λ)
+    const lS2 = Math.log10(3 * Math.PI) - 2 * Math.log10(lP) - lLam;
+    $("rRT").textContent = Math.pow(10, lS2 - ls).toFixed(12);
+    const relF = (Math.pow(10, 2 * lH - H2(ls)) - 1);
+    $("rF").textContent = (Math.abs(relF) < 1e-12 ? "0" : relF.toExponential(2)) + "  (double precision)";
+  }
+
+  let raf = 0;
+  slider.addEventListener("input", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); });
+  $("obs").addEventListener("click", () => { slider.value = Math.log10(SObs).toFixed(4); draw(); });
+  document.querySelectorAll('input[name="sigma"]').forEach(r => r.addEventListener("change", e => { sigma = +e.target.value; draw(); }));
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  slider.value = Math.log10(SObs).toFixed(4);
+  if (window.Plotly) draw(); else window.addEventListener("load", draw);
+})();
+</script>
+</body>
+</html>
