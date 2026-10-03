@@ -1,0 +1,103 @@
+# NRS³ · de Sitter
+
+The cosmological constant as a count, in Lean 4. A de Sitter universe has a horizon of radius
+`r_H = √(3/Λ) = c/|H|` and area `A = 12π/Λ`. Its entropy `S = A / (4 ℓ_P²)` fixes the constant:
+**`Λ = 3π / (ℓ_P² S)`**. For every `S > 0` this `Λ` gives a solution of both Friedmann equations
+whose horizon has entropy exactly `S`, with `H² = π c² / (ℓ_P² S)`. The larger the entropy, the
+smaller `Λ`.
+
+**[▶ Try it: move the entropy of the horizon](https://naype888-cloud.github.io/nrs3-de-sitter/)**
+
+![NRS³ · de Sitter](docs/figures/lambda_entropy.png)
+
+## Results
+
+| Statement | Lean |
+|---|---|
+| `A = 12π/Λ` | `deSitterHorizonArea_eq` |
+| `r_H = c / \|H\|` on the de Sitter solution | `deSitterHorizonRadius_eq_div_abs_hubbleConstant` |
+| `S = 3π / (ℓ² Λ)`, `0 < S` | `deSitterEntropy_eq`, `deSitterEntropy_pos` |
+| `Λ = 3π / (ℓ² S)` | `cosmologicalConstant_eq_of_deSitterEntropy` |
+| the constant `3π / (ℓ² S)` has horizon entropy exactly `S` | `deSitterEntropy_entropyCosmologicalConstant` |
+| it solves both Friedmann equations (`ρ = 0`, `p = 0`, `k = 0`) | `entropyCosmologicalConstant_firstOrderFriedmann`, `entropyCosmologicalConstant_secondOrderFriedmann` |
+| `H² = π c² / (ℓ² S)` | `sq_hubbleConstant_entropyCosmologicalConstant` |
+| `Λ` is strictly decreasing in `S` | `entropyCosmologicalConstant_strictAntiOn` |
+
+The Friedmann equations, the de Sitter scale factor `a₀ exp(σ √(Λ/3) c t)` and its Hubble rate
+are Physlib's (`Physlib.Cosmology.FLRW`). The length `ℓ` is a parameter: the Planck length in the
+figures.
+
+![NRS³ · de Sitter scale factor](docs/figures/scale_factor.png)
+
+With the observed `Λ = 1.106 × 10⁻⁵² m⁻²` (Planck 2018) the horizon entropy is
+`S ≈ 3.26 × 10¹²²`, the horizon radius `17.4 Gly`, and `H = 56.2 km/s/Mpc`, the late-time rate
+`H₀ √Ω_Λ` of a universe dominated by `Λ`.
+
+![NRS³ · horizon and Hubble rate](docs/figures/horizon_hubble.png)
+
+### In NRS³
+
+The theorems hold for every `S > 0`; they do not use the pair `T_d : P_d`. The relation
+`Λ = 3π / (ℓ_P² S)` is an identity for the de Sitter horizon. It becomes a prediction of `Λ` only
+when `S = log W` is counted from NRS³ without using `Λ`; that count is not written here.
+
+### History
+
+de Sitter (1917) found the empty universe with a cosmological constant, the same year Einstein
+introduced `Λ`. Friedmann (1922) wrote the equations of an expanding universe and Lemaître (1927)
+tied them to the recession of galaxies. Boltzmann and Planck (1900–1906) wrote the entropy as
+`S = k_B log W`. Gibbons and Hawking (1977) gave the de Sitter horizon the entropy `A / (4 ℓ_P²)`.
+
+## Build
+
+Lean 4 `v4.34.1` and [Physlib](https://github.com/leanprover-community/physlib) at
+`1433e0de` (it brings Mathlib `v4.34.1`).
+
+```bash
+lake exe cache get
+lake build
+lake env lean Verification/Axioms.lean   # only propext, Classical.choice, Quot.sound
+```
+
+Every file: no `sorry`, lines of at most 100 characters, English headers. Figures:
+`python3 docs/simulation/figures_de_sitter.py`.
+
+## Timeline 1911–1945
+
+NRS answers a question of the Solvay era with later tools. The series is placed in that window:
+what falls inside it is the history the theorem belongs to; what falls after it is a proposal,
+not part of NRS³.
+
+| Year | Event | Repository |
+|---|---|---|
+| 1900–06 | Planck and Boltzmann: `S = k_B log W` | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
+| 1911 | First Solvay conference: radiation and the quanta | |
+| 1911–12 | Poincaré: Planck's law forces discrete levels | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
+| 1915–20 | Szegő: limit theorems for Toeplitz matrices (the limit `C∞`, `D8`) | [base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger) |
+| 1917 | Einstein: the cosmological constant; de Sitter: the empty universe with `Λ` | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
+| 1922–27 | Friedmann and Lemaître: the expanding universe | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
+| 1925–27 | Pauli: exclusion, shells `2n²`, spin matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
+| 1927–32 | von Neumann: the entropy of a quantum state; Klein's inequality (1931) | [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) |
+| 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
+| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | **[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** |
+| 1945–46 | Mandelstam–Tamm: the time–energy bound; Rao (1945), Cramér (1946) | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
+
+**After the window.** Gibbons and Hawking (1977) gave the horizon its entropy. The equations are
+de Sitter's and Friedmann's; the entropy reading is later. Lean 4, Mathlib and Physlib are the
+verification.
+
+## The mosaic
+
+- [NRS and NRS³ — the base theorem](https://github.com/naype888-cloud/nava-robertson-schrodinger)
+- [NRS³ · Mandelstam–Tamm and Cramér–Rao](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao)
+- [NRS³ · Landauer and Carnot](https://github.com/naype888-cloud/nrs3-landauer-carnot)
+- **[NRS³ · de Sitter](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one)
+- [NRS³ · Penrose](https://github.com/naype888-cloud/nrs3-penrose) (proposal)
+- [NRS³ · Pauli–Dirac](https://github.com/naype888-cloud/nrs3-pauli-dirac)
+- [NRS³ · Poincaré](https://github.com/naype888-cloud/nrs3-poincare)
+- [NRS³ · Defect and curvature](https://github.com/naype888-cloud/nrs3-defect-curvature)
+- [NRS³ · Rovelli — Loop Quantum Gravity](https://github.com/naype888-cloud/nrs3-rovelli-lqg) (proposal)
+
+## License
+
+NRS Noncommercial License 1.0.0, see [`LICENSE`](LICENSE). Author: Eduardo Nava-Hernandez.
