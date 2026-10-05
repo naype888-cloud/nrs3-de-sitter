@@ -34,3 +34,19 @@ open NRSDeterminant
 #print axioms norm_det_le_re_det
 #print axioms abs_det_le_det
 #print axioms robertson_cube
+
+open HorizonCount
+
+#print axioms numCross_eq
+#print axioms numCross_centre
+#print axioms blind_below_rupture
+#print axioms quantumDefect_pos
+#print axioms quantumDefect_lt_defect
+#print axioms entropy_eq_mul_quantumDefect
+#print axioms countCosmologicalConstant_eq
+#print axioms deSitterEntropy_countCosmologicalConstant
+#print axioms countCosmologicalConstant_firstOrderFriedmann
+#print axioms countCosmologicalConstant_secondOrderFriedmann
+#print axioms countCosmologicalConstant_strictAnti
+#print axioms lower_bound_simpleCountCosmologicalConstant
+#print axioms lower_bound_centre

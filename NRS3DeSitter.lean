@@ -1,6 +1,7 @@
 module
 
 public import NRS3DeSitter.DeSitterHorizon
+public import NRS3DeSitter.HorizonCount
 public import NRS3DeSitter.NRSDeterminant
 public import NRS3DeSitter.RobertsonDeterminant
 public import NRS3DeSitter.UncertaintyMatrices
