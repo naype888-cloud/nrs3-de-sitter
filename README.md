@@ -43,12 +43,12 @@ and `Ω(Ψ)` the matrix of `½ ⟨i[A, B]⟩`; `Ω_nrs` multiplies the block of 
 | Robertson 1934 on the whole cube, at every state: `det Ω(Ψ) ≤ det Σ(Ψ)` | `robertson_cube` |
 | Robertson–Schrödinger on each axis, at every state: `det Ω_axis ≤ det Σ_axis` | `robertson_axis` |
 | `Ω(Ψ)` is block diagonal at every state: only `T` and `P` of the same axis collide | `omega_eq_blockDiagonal` |
-| at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*`, `Σ(Ψ*)` is block diagonal too | `sigma_psiStar_eq_blockDiagonal` |
-| `det Σ(Ψ*) = (C_Nava(dx) C_Nava(dy) C_Nava(dz))² · det Ω(Ψ*)` | `det_sigma_psiStar` |
-| `det Σ(Ψ*) = det Ω_nrs(Ψ*)`: the condition holds at `Ψ*` with equality | `det_sigma_psiStar_eq_det_omegaNRS` |
-| `det Ω(Ψ*) = det Σ(Ψ*)` with `2` or `3` sites on every axis | `det_omega_eq_det_sigma_psiStar` |
-| `det Ω(Ψ*) < det Σ(Ψ*)` as soon as one axis has `4` or more sites | `det_omega_lt_det_sigma_psiStar` |
-| at `4 × 4 × 4`: `det Σ(Ψ*) = ((99 − 42√5)/5)³ · det Ω(Ψ*) ≈ 1.0520 · det Ω(Ψ*)` | `det_sigma_psiStar_four` |
+| at the maximal current state of the cube, `Σ(maxCurrentCubeState)` is block diagonal too | `sigma_maxCurrentState_eq_blockDiagonal` |
+| `det Σ(maxCurrentCubeState) = (C_Nava(dx) C_Nava(dy) C_Nava(dz))² · det Ω(maxCurrentCubeState)` | `det_sigma_maxCurrentState` |
+| `det Σ(maxCurrentCubeState) = det Ω_nrs(maxCurrentCubeState)`: the condition holds at the maximal current state of the cube with equality | `det_sigma_maxCurrentState_eq_det_omegaNRS` |
+| `det Ω(maxCurrentCubeState) = det Σ(maxCurrentCubeState)` with `2` or `3` sites on every axis | `det_omega_eq_det_sigma_maxCurrentState` |
+| `det Ω(maxCurrentCubeState) < det Σ(maxCurrentCubeState)` as soon as one axis has `4` or more sites | `det_omega_lt_det_sigma_maxCurrentState` |
+| at `4 × 4 × 4`: `det Σ(maxCurrentCubeState) = ((99 − 42√5)/5)³ · det Ω(maxCurrentCubeState) ≈ 1.0520 · det Ω(maxCurrentCubeState)` | `det_sigma_maxCurrentState_four` |
 
 `Σ − iΩ` is the Gram matrix of the six fluctuation vectors and `Σ + iΩ` its transpose; both are
 positive semidefinite, and that gives `|det Ω| ≤ det Σ` (`abs_det_le_det`).
