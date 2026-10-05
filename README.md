@@ -70,7 +70,27 @@ With the observed `Λ = 1.106 × 10⁻⁵² m⁻²` (Planck 2018) the horizon en
 The de Sitter theorems hold for every `S > 0`; they do not use the pair `T_d : P_d`. The state
 condition does: it is the pair `(T_d, P_d)` of each axis of the cube. The relation
 `Λ = 3π / (ℓ_P² S)` is an identity for the de Sitter horizon. It becomes a prediction of `Λ` only
-when `S = log W` is counted from NRS³ without using `Λ`; that count is not written here.
+when `S = log W` is counted from NRS³ without using `Λ`. The count is below.
+
+### The constant from a count of states
+
+Cut an axis of `n + 1` positions between `c` and `c + 1`. The non-local links across the cut each
+close a cycle and carry one quantum (base repository, `D16g`). With `k` quanta on the cut there are
+`W = M^k` states. No `Λ` enters the count; `Λ` comes out of it.
+
+| Statement | Lean |
+|---|---|
+| `M = (c + 1)(n − c) − 1` crossing links; `M = m (m + 2)` on the central cut | `numCross_eq`, `numCross_centre` |
+| at `d = 2, 3` no configuration carries a defect: the count sees nothing | `blind_below_rupture` |
+| from `d = 4`, `0 < k δ(d) < k δ_∞` and `S = (log M / δ(d)) · Ω_d` | `quantumDefect_pos`, `quantumDefect_lt_defect`, `entropy_eq_mul_quantumDefect` |
+| `Λ = 3π / (ℓ² k log M)` from the count | `countCosmologicalConstant_eq` |
+| its horizon has entropy exactly `log W` | `deSitterEntropy_countCosmologicalConstant` |
+| it solves both Friedmann equations | `countCosmologicalConstant_firstOrderFriedmann`, `countCosmologicalConstant_secondOrderFriedmann` |
+| more quanta, strictly smaller `Λ` | `countCosmologicalConstant_strictAnti` |
+| on distinct links, `Λ ≥ 3π / (ℓ² M log 2)`; on the central cut, `Λ ≥ 3π / (ℓ² m (m + 2) log 2)` | `lower_bound_simpleCountCosmologicalConstant`, `lower_bound_centre` |
+
+The statements are algebra on the count. Which length is one step, and how many positions span
+the universe, is a physical identification; it is not in the Lean code.
 
 ### History
 
