@@ -77,19 +77,16 @@ open Real Time CutEntropy DimensionalQuantum Cosmology.FLRW.FriedmannEquation To
 
 lemma card_left (n c : ℕ) (hc : c ≤ n) :
     (Finset.univ.filter fun a : Fin (n + 1) => a.val ≤ c).card = c + 1 := by
-  have : (Finset.univ.filter fun a : Fin (n + 1) => a.val ≤ c) =
-      (Finset.range (c + 1)).attachFin (fun m hm => by simp at hm; omega) := by
-    ext a
-    simp
-  rw [this, Finset.card_attachFin, Finset.card_range]
+  simp_rw [← Nat.lt_succ_iff]
+  rw [Fin.card_filter_val_lt]
+  omega
 
 lemma card_right (n c : ℕ) :
     (Finset.univ.filter fun b : Fin (n + 1) => c < b.val).card = n - c := by
-  have : (Finset.univ.filter fun b : Fin (n + 1) => c < b.val) =
-      (Finset.Ioo c (n + 1)).attachFin (fun m hm => by simp at hm; omega) := by
-    ext b
-    simp [b.isLt]
-  rw [this, Finset.card_attachFin, Nat.card_Ioo]
+  have h := Finset.card_filter_add_card_filter_not (s := Finset.univ)
+    (fun b : Fin (n + 1) => b.val < c + 1)
+  simp only [not_lt, Nat.succ_le_iff, Finset.card_univ, Fintype.card_fin] at h
+  rw [Fin.card_filter_val_lt] at h
   omega
 
 /-- **The number of crossing links**: `M = (c + 1)(n − c) − 1`. -/
