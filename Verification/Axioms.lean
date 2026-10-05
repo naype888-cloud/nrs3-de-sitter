@@ -50,3 +50,5 @@ open HorizonCount
 #print axioms countCosmologicalConstant_strictAnti
 #print axioms lower_bound_simpleCountCosmologicalConstant
 #print axioms lower_bound_centre
+#print axioms countCosmologicalConstant_pos
+#print axioms tendsto_countCosmologicalConstant

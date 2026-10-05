@@ -23,7 +23,8 @@ number `M = (c + 1)(n − c) − 1`; each one closes a cycle and carries one qua
 `3 π / (ℓ² log W)` solves both Friedmann equations, and its horizon has entropy exactly
 `log W`. If the quanta sit on distinct links, `S ≤ M log 2`, and the count bounds the constant
 from below: `Λ ≥ 3 π / (ℓ² M log 2)`. On the central cut of `2m + 2` positions,
-`M = m (m + 2)`.
+`M = m (m + 2)`. The constant is positive for every count and decreases strictly as the count
+grows; it tends to `0`, a limit no finite count attains.
 
 The quantum of `H_d` is `δ(d)` (`D25`). At `d = 2, 3` it vanishes: every configuration of the cut
 carries no defect, and the count sees nothing. From the rupture `d = 4` on, `0 < δ(d) < δ_∞`, and
@@ -41,6 +42,8 @@ the entropy is proportional to the defect, `S = (log M / δ(d)) · Ω_d`.
 - `countCosmologicalConstant_firstOrderFriedmann`,
   `countCosmologicalConstant_secondOrderFriedmann` : both Friedmann equations hold.
 - `countCosmologicalConstant_strictAnti` : more quanta, smaller `Λ`.
+- `countCosmologicalConstant_pos`, `tendsto_countCosmologicalConstant` : `Λ > 0` for every count,
+  and `Λ → 0` as the count grows, a limit never attained.
 - `lower_bound_simpleCountCosmologicalConstant` : `3 π / (ℓ² M log 2) ≤ Λ`.
 - `lower_bound_centre` : `3 π / (ℓ² m (m + 2) log 2) ≤ Λ` on the central cut.
 
@@ -64,7 +67,7 @@ the entropy is proportional to the defect, `S = (log M / δ(d)) · Ω_d`.
 
 namespace HorizonCount
 
-open Real Time CutEntropy DimensionalQuantum Cosmology.FLRW.FriedmannEquation
+open Real Time CutEntropy DimensionalQuantum Cosmology.FLRW.FriedmannEquation Topology
 
 /-!
 
@@ -202,6 +205,24 @@ theorem countCosmologicalConstant_strictAnti {n c k₁ k₂ : ℕ} {ℓ : ℝ} (
   have hM' : (0 : ℝ) < Real.log (numCross n c) :=
     Real.log_pos (by exact_mod_cast hM)
   exact mul_lt_mul_of_pos_right (by exact_mod_cast h) hM'
+
+/-- The counted constant is positive: a finite count never gives `Λ = 0`. -/
+theorem countCosmologicalConstant_pos {n c k : ℕ} {ℓ : ℝ} (hk : 1 ≤ k)
+    (hM : 2 ≤ numCross n c) (hℓ : ℓ ≠ 0) : 0 < countCosmologicalConstant n c k ℓ :=
+  entropyCosmologicalConstant_pos (entropy_pos hk hM) hℓ
+
+/-- **`Λ → 0` as the count grows, a limit never attained.** -/
+theorem tendsto_countCosmologicalConstant {n c : ℕ} {ℓ : ℝ} :
+    Filter.Tendsto (fun k : ℕ => countCosmologicalConstant n c k ℓ) Filter.atTop (𝓝 0) := by
+  have h : (fun k : ℕ => countCosmologicalConstant n c k ℓ) =
+      fun k : ℕ => 3 * π / (ℓ ^ 2 * Real.log (numCross n c)) * (k : ℝ)⁻¹ := by
+    funext k
+    rw [countCosmologicalConstant, entropyCosmologicalConstant, entropy_eq]
+    ring
+  rw [h]
+  have := (tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop).const_mul
+    (3 * π / (ℓ ^ 2 * Real.log (numCross n c)))
+  rwa [mul_zero] at this
 
 /-!
 

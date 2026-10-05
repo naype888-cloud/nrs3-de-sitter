@@ -87,6 +87,7 @@ close a cycle and carry one quantum (base repository, `D16g`). With `k` quanta o
 | its horizon has entropy exactly `log W` | `deSitterEntropy_countCosmologicalConstant` |
 | it solves both Friedmann equations | `countCosmologicalConstant_firstOrderFriedmann`, `countCosmologicalConstant_secondOrderFriedmann` |
 | more quanta, strictly smaller `Λ` | `countCosmologicalConstant_strictAnti` |
+| `Λ > 0` for every count; `Λ → 0` as the count grows, a limit no finite count attains | `countCosmologicalConstant_pos`, `tendsto_countCosmologicalConstant` |
 | on distinct links, `Λ ≥ 3π / (ℓ² M log 2)`; on the central cut, `Λ ≥ 3π / (ℓ² m (m + 2) log 2)` | `lower_bound_simpleCountCosmologicalConstant`, `lower_bound_centre` |
 
 The statements are algebra on the count. Which length is one step, and how many positions span
