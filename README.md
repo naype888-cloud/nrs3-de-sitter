@@ -30,28 +30,23 @@ In the action `∫ d⁴x e [ c⁴/(16πG) (R − 2Λ) + ψ̄(iħc γ^a e_a^μ �
 only through the vacuum term: `R − 2Λ = R − 6π / (ℓ_P² S)`. The Lagrangian statements are pointwise
 in the density; the integral, the curvature of the metric and the Dirac term are not formalized.
 
-### The condition on the state: `det Ω_nrs ≤ det Σ`
+### The condition on the state: det|NRS³
 
 The uncertainty condition is not a term of the action: an action is varied over field
 configurations, and the inequality restricts the state in which it is evaluated. On the cube
-`H_dx ⊗ H_dy ⊗ H_dz`, `Σ(Ψ)` is the `6 × 6` covariance matrix of `(T_x, P_x, T_y, P_y, T_z, P_z)`
-and `Ω(Ψ)` the matrix of `½ ⟨i[A, B]⟩`; `Ω_nrs` multiplies the block of each axis by
-`C_Nava(d_axis)`.
+`H_dx ⊗ H_dy ⊗ H_dz`, `Σ` is the `6 × 6` covariance matrix of `(T_x, P_x, T_y, P_y, T_z, P_z)`.
+Robertson's 1934 relation `|det Ω| ≤ det Σ` for every state, its floor `((t_x t_y t_z)/8)²` on the
+cube and the ratio `(C_Nava(dx) C_Nava(dy) C_Nava(dz))²` at the maximal current state are proved
+once, in the [base repository](https://github.com/naype888-cloud/nava-robertson-schrodinger)
+(`D49`, `D49b`, `D49c`, strict in the band for every state: `D49t`). Here they are read at the
+maximal current state of the cube:
 
 | Statement | Lean |
 |---|---|
-| Robertson 1934 on the whole cube, at every state: `det Ω(Ψ) ≤ det Σ(Ψ)` | `robertson_cube` |
-| Robertson–Schrödinger on each axis, at every state: `det Ω_axis ≤ det Σ_axis` | `robertson_axis` |
-| `Ω(Ψ)` is block diagonal at every state: only `T` and `P` of the same axis collide | `omega_eq_blockDiagonal` |
-| at the maximal current state of the cube, `Σ(maxCurrentCubeState)` is block diagonal too | `sigma_maxCurrentState_eq_blockDiagonal` |
-| `det Σ(maxCurrentCubeState) = (C_Nava(dx) C_Nava(dy) C_Nava(dz))² · det Ω(maxCurrentCubeState)` | `det_sigma_maxCurrentState` |
-| `det Σ(maxCurrentCubeState) = det Ω_nrs(maxCurrentCubeState)`: the condition holds at the maximal current state of the cube with equality | `det_sigma_maxCurrentState_eq_det_omegaNRS` |
-| `det Ω(maxCurrentCubeState) = det Σ(maxCurrentCubeState)` with `2` or `3` sites on every axis | `det_omega_eq_det_sigma_maxCurrentState` |
-| `det Ω(maxCurrentCubeState) < det Σ(maxCurrentCubeState)` as soon as one axis has `4` or more sites | `det_omega_lt_det_sigma_maxCurrentState` |
-| at `4 × 4 × 4`: `det Σ(maxCurrentCubeState) = ((99 − 42√5)/5)³ · det Ω(maxCurrentCubeState) ≈ 1.0520 · det Ω(maxCurrentCubeState)` | `det_sigma_maxCurrentState_four` |
-
-`Σ − iΩ` is the Gram matrix of the six fluctuation vectors and `Σ + iΩ` its transpose; both are
-positive semidefinite, and that gives `|det Ω| ≤ det Σ` (`abs_det_le_det`).
+| the floor is `1 / ((dx − 1)(dy − 1)(dz − 1))²` | `floor_eq` |
+| equality when every axis has `2` or `3` positions | `det_eq_of_two_three` |
+| strict as soon as one axis has `4` or more | `floor_lt_det_of_four_le` |
+| at `4 × 4 × 4`, `det Σ = ((99 − 42√5)/5)³ · floor ≈ 1.0520 · floor` | `det_four` |
 
 The Friedmann equations, the de Sitter scale factor `a₀ exp(σ √(Λ/3) c t)` and its Hubble rate
 are Physlib's (`Physlib.Cosmology.FLRW`). The length `ℓ` is a parameter: the Planck length in the

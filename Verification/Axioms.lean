@@ -19,21 +19,12 @@ open Cosmology.FLRW.FriedmannEquation
 #print axioms vacuumEnergyDensity_entropyCosmologicalConstant
 #print axioms vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn
 
-open NRSDeterminant
+open StateCondition
 
-#print axioms robertson_pair
-#print axioms robertson_axis
-#print axioms omega_eq_blockDiagonal
-#print axioms det_omega
-#print axioms sigma_maxCurrentState_eq_blockDiagonal
-#print axioms det_sigma_maxCurrentState
-#print axioms det_sigma_maxCurrentState_eq_det_omegaNRS
-#print axioms det_omega_eq_det_sigma_maxCurrentState
-#print axioms det_omega_lt_det_sigma_maxCurrentState
-#print axioms det_sigma_maxCurrentState_four
-#print axioms norm_det_le_re_det
-#print axioms abs_det_le_det
-#print axioms robertson_cube
+#print axioms floor_eq
+#print axioms det_eq_of_two_three
+#print axioms floor_lt_det_of_four_le
+#print axioms det_four
 
 open HorizonCount
 
