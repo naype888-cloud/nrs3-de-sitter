@@ -6,7 +6,7 @@ The cosmological constant as a count, in Lean 4. A de Sitter universe has a hori
 whose horizon has entropy exactly `S`, with `H² = π c² / (ℓ_P² S)`. The larger the entropy, the
 smaller `Λ`.
 
-**[▶ Try it: move the entropy of the horizon](https://naype888-cloud.github.io/nrs3-de-sitter/)**
+**[▶ Try it: move the entropy of the horizon](https://naype888-cloud.github.io/nrs3-de-sitter/)** · **[▶ on T³: the cut of the three-torus fixes Λ](https://naype888-cloud.github.io/nrs3-de-sitter/t3.html)**
 
 ![NRS³ · de Sitter](docs/figures/lambda_entropy.png)
 
