@@ -9,7 +9,7 @@ public import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 public import NavaRobertsonIndependent.Mathematics.D49c_RobertsonDeterminantProduct
 /-!
 
-# The condition on the state: det|NRS³ at the maximal current state of the cube
+# The condition on the state: det|RS^N³ at the maximal current state of the cube
 
 ## i. Overview
 
@@ -17,7 +17,7 @@ The uncertainty condition is not a term of the action: it restricts the state in
 action is evaluated. On the cube `H_dx ⊗ H_dy ⊗ H_dz`, `Σ` is the `6 × 6` covariance matrix of
 `(T_x, P_x, T_y, P_y, T_z, P_z)`. Robertson's 1934 relation `|det Ω| ≤ det Σ` holds for every
 state (`D49`, `D49b`), with floor `((t_x t_y t_z) / 8)²` on the cube, and at the maximal current
-state of the cube `det Σ = (C_Nava(dx) C_Nava(dy) C_Nava(dz))² · floor` (`D49c`). All of this is
+state of the cube `det Σ = (C_N(dx) C_N(dy) C_N(dz))² · floor` (`D49c`). All of this is
 in the base repository; here it is read for de Sitter.
 
 At the maximal current state the floor is `1 / ((dx − 1)(dy − 1)(dz − 1))²`. The relation is an
@@ -98,7 +98,7 @@ lemma floor_pos (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) : 0 < floor dx d
     linarith
   positivity
 
-/-- `det Σ = (C_Nava(dx) C_Nava(dy) C_Nava(dz))² · floor` (`D49c`). -/
+/-- `det Σ = (C_N(dx) C_N(dy) C_N(dz))² · floor` (`D49c`). -/
 lemma detSigma_eq (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     detSigma dx dy dz =
       (CoherenceConstant dx * CoherenceConstant dy * CoherenceConstant dz) ^ 2 * floor dx dy dz :=
