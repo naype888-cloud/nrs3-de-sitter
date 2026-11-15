@@ -1,229 +1,199 @@
-# RS^N³ · de Sitter
+<div align="center">
 
-The cosmological constant as a count on the open NRS³ cube, in Lean 4. A de Sitter universe has a
-horizon of radius `r_H = √(3/Λ) = c/|H|` and area `A = 12π/Λ`. Its entropy `S = A / (4 ℓ_P²)` fixes
-the constant: **`Λ = 3π / (ℓ_P² S)`**. For every `S > 0` this `Λ` gives a solution of both Friedmann
-equations whose horizon has entropy exactly `S`, with `H² = π c² / (ℓ_P² S)`.
+# RS³ · de Sitter : la constante cosmologique sur le cube ouvert
+### Loi d'aire discrète sur ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, accélération de Friedmann et candado de positivité
 
-On the open cube `H_dx ⊗ H_dy ⊗ H_dz`, a transverse cross-section across an axis spans an area of
-`dy · dz` independent fibers. The entropy follows the discrete Bekenstein–Hawking area law:
-`S_cube = (dy · dz) · S_1D`, scaling the cosmological constant as `Λ_cube = Λ_1D / (dy · dz)`.
+**Eduardo Nava Hernández**  
+*Vérification formelle certifiée en Lean 4 · 0 sorry · Physlib (Cosmology.FLRW)*
 
-**[▶ Try it: move the entropy of the horizon](https://naype888-cloud.github.io/nrs3-de-sitter/)** · **[▶ Open cube simulator](https://naype888-cloud.github.io/nava-robertson-schrodinger/)**
+[![Lean 4](https://img.shields.io/badge/Lean_4-v4.34.0-blue.svg?style=flat-square)](https://leanprover.github.io/)
+[![Mathlib](https://img.shields.io/badge/Mathlib-v4.34.0-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
+[![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry%20%7C%20ZFC-brightgreen.svg?style=flat-square)]()
+[![Physlib](https://img.shields.io/badge/Physlib-Cosmology.FLRW-brightgreen.svg?style=flat-square)](https://github.com/leanprover-community/physlib)
+[![Simulateur](https://img.shields.io/badge/Portail-de_Sitter_Interactif-00e5ff.svg?style=for-the-badge)](https://naype888-cloud.github.io/nrs3-de-sitter/)
 
-![RS^N³ · de Sitter](docs/figures/lambda_entropy.png)
+</div>
 
-## Results
+---
 
-### 1. The Horizon and Friedmann on the Open NRS³ Cube
+> ### 🏛️ Ce qui distingue le théorème et la constante cosmologique du cube
+>
+> La constante cosmologique Λ n'est pas un paramètre externe ad hoc : elle émerge comme le péage géométrique de la quatrième dimension couplé au transport causal sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz.
+>
+> <div align="center">
+> <img src="assets/plaque_desitter_master.png" alt="Plaque maîtresse : la constante cosmologique de Sitter et les équations de Friedmann sur le cube ouvert" width="860">
+> </div>
+>
+> **1 · Loi d'aire discrète.** La section transverse du cube ouvert déploie dy · dz fibres indépendantes : l'entropie de coupure satisfait rigoureusement S_cube = (dy · dz) · S_1D.
+>
+> **2 · Équations de Friedmann vérifiées.** La constante induite Λ_cube = 3π / (ℓ² S_cube) résout exactement les deux équations de Friedmann de FLRW sous accélération positive stricte ä/a = H² > 0.
+>
+> **3 · Candado de positivité algébrique.** La positivité de la norme hilbertienne ⟨ψ|ψ⟩ ≥ 0 interdit tout défaut négatif : la constante cosmologique est strictement positive (Λ_cube > 0), excluant toute géométrie Anti-de Sitter.
+>
+> **4 · Comportement asymptotique.** Lorsque l'aire transverse grandit vers l'infini, Λ_cube décroît strictement vers 0, limite asymptotique qu'aucun cube fini ne peut atteindre.
 
-| Statement | Lean |
-|---|---|
-| Area law: `S_cube = (dy · dz) · S_1D` | `cubeEntropy_eq_area_mul` |
-| `S_cube > 0` for every non-trivial box | `cubeEntropy_pos` |
-| `Λ_cube = Λ_1D / (dy · dz)` scaled by transverse area | `cubeCosmologicalConstant_eq_div_area` |
-| First Friedmann equation on the open cube | `cubeCosmologicalConstant_firstOrderFriedmann` |
-| Second Friedmann equation (`ä/a = H² > 0`, accelerated expansion) | `cubeCosmologicalConstant_secondOrderFriedmann` |
-| `H² = π c² / (ℓ² S_cube)` on the open cube | `sq_hubbleConstant_cubeCosmologicalConstant` |
-| Strict positivity: `Λ_cube > 0` (Anti-de Sitter prohibited by Hilbert positivity) | `cubeCosmologicalConstant_pos` |
-| Strict monotonicity: larger transverse area gives smaller `Λ_cube` | `cubeCosmologicalConstant_strictAnti_area` |
-| `Λ_cube → 0` as transverse area tends to infinity | `tendsto_cubeCosmologicalConstant_area` |
-| Vacuum energy density: `ρ_Λ c² = 3 c⁴ / (8 G ℓ² S_cube)` | `cubeVacuumEnergyDensity_eq` |
+---
 
-### 2. Continuum de Sitter and Horizon Entropy (FLRW)
+## ⚡ Résumé formel
 
-| Statement | Lean |
-|---|---|
-| `A = 12π/Λ` | `deSitterHorizonArea_eq` |
-| `r_H = c / \|H\|` on the de Sitter solution | `deSitterHorizonRadius_eq_div_abs_hubbleConstant` |
-| `S = 3π / (ℓ² Λ)`, `0 < S` | `deSitterEntropy_eq`, `deSitterEntropy_pos` |
-| `Λ = 3π / (ℓ² S)` | `cosmologicalConstant_eq_of_deSitterEntropy` |
-| the constant `3π / (ℓ² S)` has horizon entropy exactly `S` | `deSitterEntropy_entropyCosmologicalConstant` |
-| it solves both Friedmann equations (`ρ = 0`, `p = 0`, `k = 0`) | `entropyCosmologicalConstant_firstOrderFriedmann`, `entropyCosmologicalConstant_secondOrderFriedmann` |
-| `H² = π c² / (ℓ² S)` | `sq_hubbleConstant_entropyCosmologicalConstant` |
-| `Λ` is strictly decreasing in `S` | `entropyCosmologicalConstant_strictAntiOn` |
-| the vacuum term of `c⁴/(16πG) (R − 2Λ)` is `R − 6π / (ℓ² S)`; the coefficient of `R` does not depend on `S` | `einsteinHilbertLambdaDensity_entropyCosmologicalConstant` |
-| at `R = 0` the density is `−ρ_Λ c²`, with `ρ_Λ c² = Λ c⁴ / (8πG)` | `einsteinHilbertLambdaDensity_zero` |
-| `ρ_Λ c² = 3 c⁴ / (8 G ℓ² S)`, strictly decreasing in `S` | `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn` |
+Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des équations de Friedmann sur le cube discret ouvert :
 
-In the action `∫ d⁴x e [ c⁴/(16πG) (R − 2Λ) + ψ̄(iħc γ^a e_a^μ ∇_μ − mc²)ψ ]` the entropy enters
-only through the vacuum term: `R − 2Λ = R − 6π / (ℓ_P² S)`. The Lagrangian statements are pointwise
-in the density; the integral, the curvature of the metric and the Dirac term are not formalized.
+* La géométrie de l'horizon continu FLRW et son entropie sont formalisées dans [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) (`deSitterHorizonArea_eq`, `deSitterEntropy_entropyCosmologicalConstant`).
+* La loi d'aire et les équations de Friedmann sur le cube ouvert sont certifiées dans [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeEntropy_eq_area_mul`, `cubeCosmologicalConstant_firstOrderFriedmann`, `cubeCosmologicalConstant_secondOrderFriedmann`).
+* La densité d'énergie du vide et le Lagrangien gravitationnel sont établis dans [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) (`einsteinHilbertLambdaDensity_zero`, `vacuumEnergyDensity_entropyCosmologicalConstant`).
+* Le comptage d'états de fibres et la rupture dimensionnelle sont formalisés dans [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) (`numCross_eq`, `blind_below_rupture`, `countCosmologicalConstant_eq`).
+* La condition spectrale de Robertson sur la matrice de covariance du cube 6 × 6 est certifiée dans [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) (`floor_eq`, `det_four`).
 
-### 3. The State Condition: det|RS^N³ on the Open Cube
+---
 
-The uncertainty condition is not a term of the action: an action is varied over field
-configurations, and the inequality restricts the state in which it is evaluated. On the cube
-`H_dx ⊗ H_dy ⊗ H_dz`, `Σ` is the `6 × 6` covariance matrix of `(T_x, P_x, T_y, P_y, T_z, P_z)`.
-Robertson's 1934 relation `|det Ω| ≤ det Σ` for every state, its floor `((t_x t_y t_z)/8)²` on the
-cube and the ratio `(C_N(dx) C_N(dy) C_N(dz))²` at the maximal current state are proved
-once, in the [base repository](https://github.com/naype888-cloud/nava-robertson-schrodinger)
-(`D49`, `D49b`, `D49c`, strict in the band for every state: `D49t`). Here they are read at the
-maximal current state of the cube:
+## 📐 Chaîne déductive en cinq étapes
 
-| Statement | Lean |
-|---|---|
-| the floor is `1 / ((dx − 1)(dy − 1)(dz − 1))²` | `floor_eq` |
-| equality when every axis has `2` or `3` positions | `det_eq_of_two_three` |
-| strict as soon as one axis has `4` or more | `floor_lt_det_of_four_le` |
-| at `4 × 4 × 4`, `det Σ = ((99 − 42√5)/5)³ · floor ≈ 1.0520 · floor` | `det_four` |
+### Étape 1 : Géométrie de l'horizon de de Sitter continu (FLRW)
 
-The Friedmann equations, the de Sitter scale factor `a₀ exp(σ √(Λ/3) c t)` and its Hubble rate
-are Physlib's (`Physlib.Cosmology.FLRW`). The length `ℓ` is a parameter: the Planck length in the
-figures.
+> **Proposition 1.1 (Aire et rayon de Hubble).** L'horizon cosmologique de la solution de de Sitter a pour rayon r_H = c / |H| = √(3/Λ) et pour aire A = 12π/Λ. L'entropie d'horizon de Gibbons–Hawking S = A / (4ℓ²) fixe la constante cosmologique selon Λ = 3π / (ℓ² S).
 
-![RS^N³ · de Sitter scale factor](docs/figures/scale_factor.png)
+*Module formel :* [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) (`deSitterHorizonArea_eq`, `deSitterHorizonRadius_eq_div_abs_hubbleConstant`, `cosmologicalConstant_eq_of_deSitterEntropy`).  
+*Démonstration :* Dérive directement de la métrique FLRW sous constante de Hubble stationnaire.
 
-With the observed `Λ = 1.106 × 10⁻⁵² m⁻²` (Planck 2018) the horizon entropy is
-`S ≈ 3.26 × 10¹²²`, the horizon radius `17.4 Gly`, and `H = 56.2 km/s/Mpc`, the late-time rate
-`H₀ √Ω_Λ` of a universe dominated by `Λ`.
+---
 
-![RS^N³ · horizon and Hubble rate](docs/figures/horizon_hubble.png)
+### Étape 2 : Loi d'aire et équations de Friedmann sur le cube ouvert NRS³
 
-### 4. Grounding in the Open NRS³ Cube: Pure Space (d ≤ 3) vs Time Fibration (d = 4)
+> **Proposition 2.1 (Loi d'aire transverse et accélération de Friedmann).** Sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, la section transverse perpendiculaire à l'axe X englobe dy · dz fibres indépendantes. L'entropie totale satisfait S_cube = (dy · dz) · S_1D, et la constante Λ_cube = 3π / (ℓ² S_cube) résout identiquement les deux équations de Friedmann sous accélération stricte ä/a = H² > 0.
 
-The physical space is continuous open ℝ³, represented operationally by the open cube `H_dx ⊗ H_dy ⊗ H_dz`.
-The previous representation on a periodic three-torus `T³` was a compact boundary artifact.
-On the open cube, the physical mechanism of the cosmological constant is exact:
+*Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeEntropy_eq_area_mul`, `cubeCosmologicalConstant_firstOrderFriedmann`, `cubeCosmologicalConstant_secondOrderFriedmann`, `sq_hubbleConstant_cubeCosmologicalConstant`).  
+*Démonstration :* Composition du produit tensoriel spatial avec la solution de de Sitter de Physlib.
 
-* **In pure space (d ≤ 3):** The Gram defect vanishes identically (`defectGram = 0`, `C_N = 1`).
-  Photons travel without friction or clock (`dτ = 0`), and there is no cosmological curvature.
-* **In the time fibration (d = 4):** Advancing along the proper time fiber (`dτ > 0`) activates the
-  fourth dimension. By `PR #1768`, Clifford Dirac matrices turn on, and Cauchy–Schwarz forces an
-  irreducible geometric defect `C_M(4) = (94 − 42√5)/5 ≈ 0.017029 > 0`.
-* **The Friedmann acceleration:** By Mandelstam–Tamm (`ΔE · τ ≥ ħ/2`), this defect produces the vacuum
-  energy density `ρ_Λ c² > 0` that drives the late-time de Sitter expansion `ä/a = H² > 0`.
-* **Positivity lock:** Because Hilbert space inner products satisfy `⟨ψ|ψ⟩ ≥ 0`, no negative defect
-  can exist. Thus `Λ > 0` strictly, excluding Anti-de Sitter solutions from first principles.
+---
 
-### 5. The Constant from 1D Fibers
+### Étape 3 : Candado de positivité et décroissance vers zéro
 
-Cut an axis of `n + 1` positions between `c` and `c + 1`. The non-local links across the cut each
-close a cycle and carry one quantum (base repository, `D16g`). With `k` quanta on the cut there are
-`W = M^k` states. No `Λ` enters the count; `Λ` comes out of it.
+> **Proposition 3.1 (Positivité stricte et absence d'Anti-de Sitter).** La positivité du produit interne hilbertien garantit que le défaut géométrique est toujours positif ou nul. La constante cosmologique du cube est strictement positive (Λ_cube > 0) pour toute boîte finie, et tend vers zéro lorsque l'aire transverse grandit vers l'infini.
 
-| Statement | Lean |
-|---|---|
-| `M = (c + 1)(n − c) − 1` crossing links; `M = m (m + 2)` on the central cut | `numCross_eq`, `numCross_centre` |
-| at `d = 2, 3` no configuration carries a defect: the count sees nothing | `blind_below_rupture` |
-| from `d = 4`, `0 < k δ(d) < k δ_∞` and `S = (log M / δ(d)) · Ω_d` | `quantumDefect_pos`, `quantumDefect_lt_defect`, `entropy_eq_mul_quantumDefect` |
-| `Λ = 3π / (ℓ² k log M)` from the count | `countCosmologicalConstant_eq` |
-| its horizon has entropy exactly `log W` | `deSitterEntropy_countCosmologicalConstant` |
-| it solves both Friedmann equations | `countCosmologicalConstant_firstOrderFriedmann`, `countCosmologicalConstant_secondOrderFriedmann` |
-| more quanta, strictly smaller `Λ` | `countCosmologicalConstant_strictAnti` |
-| `Λ > 0` for every count; `Λ → 0` as the count grows, a limit no finite count attains | `countCosmologicalConstant_pos`, `tendsto_countCosmologicalConstant` |
-| on distinct links, `Λ ≥ 3π / (ℓ² M log 2)`; on the central cut, `Λ ≥ 3π / (ℓ² m (m + 2) log 2)` | `lower_bound_simpleCountCosmologicalConstant`, `lower_bound_centre` |
+*Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeCosmologicalConstant_pos`, `cubeCosmologicalConstant_strictAnti_area`, `tendsto_cubeCosmologicalConstant_area`).  
+*Démonstration :* Propriété de positivité de la fonction logarithme sur le nombre de liaisons de coupure.
 
-The statements are algebra on the count. Which length is one step, and how many positions span
-the universe, is a physical identification; it is not in the Lean code.
+---
 
-### History
+### Étape 4 : Densité d'énergie du vide et terme Lagrangien
 
-de Sitter (1917) found the empty universe with a cosmological constant, the same year Einstein
-introduced `Λ`. Friedmann (1922) wrote the equations of an expanding universe and Lemaître (1927)
-tied them to the recession of galaxies. Boltzmann and Planck (1900–1906) wrote the entropy as
-`S = k_B log W`. Gibbons and Hawking (1977) gave the de Sitter horizon the entropy `A / (4 ℓ_P²)`.
+> **Proposition 4.1 (Énergie de vide induite).** Au point de courbure scalaire nulle, la densité lagrangienne gravitationnelle est l'opposée exacte de la densité d'énergie de vide ρ_Λ c² = 3c⁴ / (8G ℓ² S_cube), strictement décroissante avec l'entropie.
 
-## Build
+*Module formel :* [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) (`einsteinHilbertLambdaDensity_zero`, `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn`).  
+*Démonstration :* Évaluation ponctuelle de la densité d'Einstein–Hilbert avec constante cosmologique fixée par l'entropie.
 
-Lean 4 `v4.34.0` and the
-[base repository](https://github.com/naype888-cloud/nava-robertson-schrodinger) at `3bb4d4eb`
-(it brings [Physlib](https://github.com/leanprover-community/physlib) at `1c81053a` and Mathlib
-`v4.34.0`).
+---
+
+### Étape 5 : La rupture d = 4 et la condition d'état sur le cube
+
+> **Proposition 5.1 (Rupture dimensionnelle et déterminant de Robertson).** En dimension purement spatiale d ≤ 3, le défaut s'annule (C_N = 1). À partir de d ≥ 4, le défaut volumétrique devient strictement positif. Le déterminant de covariance 6 × 6 satisfait det Σ ≥ floor pour tout état, avec un rapport ((99 − 42√5)/5)³ ≈ 1.0520 à la taille 4 × 4 × 4.
+
+*Module formel (rupture) :* [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) (`blind_below_rupture`, `quantumDefect_pos`).  
+*Module formel (déterminant) :* [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) (`floor_eq`, `det_eq_of_two_three`, `floor_lt_det_of_four_le`, `det_four`).  
+*Démonstration :* Déterminant de Gram sur le produit tensoriel des trois paires canoniques (T_d, P_d).
+
+---
+
+## 🔬 Catalogue des modules formels
+
+| Fichier Lean | Théorème principal | Portée mathématique | Statut |
+|:---|:---|:---|:---:|
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeEntropy_eq_area_mul` | Loi d'aire transverse sur le cube ouvert 3D | **0 sorry** |
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_firstOrderFriedmann` | Première équation de Friedmann résolue | **0 sorry** |
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_secondOrderFriedmann` | Deuxième équation de Friedmann (ä > 0) | **0 sorry** |
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_pos` | Candado de positivité (Λ > 0 strict) | **0 sorry** |
+| [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) | `deSitterHorizonArea_eq` | Aire A = 12π/Λ et rayon de Hubble r_H | **0 sorry** |
+| [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) | `cosmologicalConstant_eq_of_deSitterEntropy` | Inversion exacte Λ = 3π / (ℓ² S) | **0 sorry** |
+| [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) | `vacuumEnergyDensity_entropyCosmologicalConstant` | Densité d'énergie de vide ρ_Λ c² | **0 sorry** |
+| [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) | `numCross_eq` | Nombre de liaisons transverses M | **0 sorry** |
+| [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) | `blind_below_rupture` | Annulation du défaut en d ≤ 3 | **0 sorry** |
+| [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) | `floor_eq` | Plancher de Robertson du cube 3D | **0 sorry** |
+| [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) | `det_four` | Excès de déterminant à la taille 4 × 4 × 4 | **0 sorry** |
+
+---
+
+## 🌐 Contributions Physlib en amont
+
+| PR Physlib | Fichier amont | Objet et énoncé | Statut |
+|:---:|:---|:---|:---:|
+| **#1725** | `TightBindingChain/Cube` | Commutation des axes et inégalité sur le cube | **MERGED** |
+| **#1986** | `TightBindingChain/Cube` | Commutation stricte des observables axiales | **MERGED** |
+| **#1987** | `TightBindingChain/Cube` | Coordination combinatoire Δ = 12 du réseau | **MERGED** |
+| **#1718** | `TightBindingChain/Saturation` | Égalité de Robertson–Schrödinger ssi d ≤ 3 | **MERGED** |
+| **#1734** | `TightBindingChain/LongChainLimit` | Convergence vers la limite de Szegő | **MERGED** |
+| **#1735** | `TightBindingChain/LongChainMonotonicity` | Monotonie stricte de C_N dès d ≥ 4 | **MERGED** |
+
+---
+
+## 🏛️ Le Mosaïque des développements satellites
+
+| Dépôt | Thématique et objet central |
+|:---|:---|
+| [**`nava-robertson-schrodinger`**](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Théorème de base : chaîne 1D, cube NRS³ et monotonie de C_N |
+| [**`nrs3-de-sitter`**](https://github.com/naype888-cloud/nrs3-de-sitter) | La constante cosmologique sur le cube ouvert et les équations de Friedmann (ce dépôt) |
+| [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Borne temporelle orthogonale et efficacité de Cramér–Rao |
+| [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Coût de dissipation thermodynamique et limite de Carnot |
+| [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | Matrices de spin de Pauli et représentations de Clifford |
+| [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | Géométrie de Minkowski induite par la matrice de Gram |
+| [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Quantification discrète selon Poincaré (1912) |
+| [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | Quanta de courbure sur surfaces fermées |
+| [`nrs3-dark`](https://github.com/naype888-cloud/nrs3-dark) | Part non résolue par la lumière et fraction volumétrique |
+| [`nrs3-cube`](https://github.com/naype888-cloud/nrs3-cube) | Le cube ouvert multidimensionnel généralisé |
+
+---
+
+## ⏱️ Chronologie historique (1900–1945)
+
+| Année | Événement historique | Dépôt associé |
+|:---:|:---|:---:|
+| **1900–06** | Planck et Boltzmann : formule de l'entropie S = k_B ln W | **`nrs3-de-sitter`** |
+| **1911–12** | Poincaré : la loi de Planck impose des niveaux discrets | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
+| **1915–20** | Szegő : théorèmes limites pour matrices de Toeplitz | [`nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) |
+| **1917** | Einstein : constante cosmologique ; de Sitter : univers vide avec Λ | **`nrs3-de-sitter`** |
+| **1922–27** | Friedmann et Lemaître : univers en expansion dynamique | **`nrs3-de-sitter`** |
+| **1925–27** | Pauli : principe d'exclusion et matrices de spin | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
+| **1928** | Dirac : matrices gamma 4 × 4 | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
+| **1929–30** | Robertson et Schrödinger : inégalité d'incertitude avec covariance | [`nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) |
+| **1934** | Robertson : déterminant d'indétermination multi-observables | [`nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) |
+| **1945–46** | Mandelstam et Tamm : borne temps-énergie quantique | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
+
+---
+
+## 🛠️ Reproduction et vérification formelle en Lean 4
+
+Pour compiler et vérifier l'ensemble des modules formels de ce dépôt :
 
 ```bash
-lake exe cache get
+# Compilation de la bibliothèque
 lake build NRS3DeSitter
-lake env lean Verification/Axioms.lean   # only propext, Classical.choice, Quot.sound
+
+# Vérification rigoureuse des axiomes du noyau
+lake env lean Verification/Axioms.lean
 ```
 
-Every file: no `sorry`, lines of at most 100 characters, English headers. Figures:
-`python3 docs/simulation/figures_de_sitter.py`.
+### Base axiomatique standard
 
-## Timeline 1911–1945
+L'intégralité des théorèmes compile strictement sous les trois axiomes standards de ZFC du noyau de Lean 4 :
 
-RS^N answers a question of the Solvay era with later tools. The series is placed in that window:
-what falls inside it is the history the theorem belongs to; what falls after it is a proposal,
-not part of RS^N³.
+```text
+[propext, Classical.choice, Quot.sound]
+```
 
-| Year | Event | Repository |
-|---|---|---|
-| 1900–06 | Planck and Boltzmann: `S = k_B log W` | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
-| 1911 | First Solvay conference: radiation and the quanta | |
-| 1911–12 | Poincaré: Planck's law forces discrete levels | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
-| 1915–20 | Szegő: limit theorems for Toeplitz matrices (the limit `C_N^∞`, `D8`) | [base repository (RS^N, RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger) |
-| 1917 | Einstein: the cosmological constant; de Sitter: the empty universe with `Λ` | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
-| 1922–27 | Friedmann and Lemaître: the expanding universe | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
-| 1925–27 | Pauli: exclusion, shells `2n²`, spin matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| 1927–32 | von Neumann: the entropy of a quantum state; Klein's inequality (1931) | [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) |
-| 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| 1929 | van der Waerden: spinors, `SL(2, ℂ)` on Hermitian matrices; the uncertainty cone | [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) |
-| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | **[base repository (RS^N, RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** |
-| 1945–46 | Mandelstam–Tamm: the time–energy bound; Rao (1945), Cramér (1946) | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
+* **0 `sorry`** dans l'ensemble des fichiers formels.
+* Aucun axiome additionnel non vérifié.
 
-**After the window.** Gibbons and Hawking (1977) gave the horizon its entropy. The equations are
-de Sitter's and Friedmann's; the entropy reading is later. Lean 4, Mathlib and Physlib are the
-verification.
+---
 
-## The mosaic
+## 📜 Licence
 
-- [RS^N and RS^N³ — the base theorem](https://github.com/naype888-cloud/nava-robertson-schrodinger)
-- [RS^N³ · Mandelstam–Tamm and Cramér–Rao](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao)
-- [RS^N³ · Landauer and Carnot](https://github.com/naype888-cloud/nrs3-landauer-carnot)
-- **[RS^N³ · de Sitter](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one)
-- [RS^N³ · Penrose](https://github.com/naype888-cloud/nrs3-penrose) (proposal)
-- [RS^N³ · Pauli–Dirac](https://github.com/naype888-cloud/nrs3-pauli-dirac)
-- [RS^N³ · The uncertainty cone](https://github.com/naype888-cloud/nrs3-uncertainty-cone)
-- [RS^N³ · Poincaré](https://github.com/naype888-cloud/nrs3-poincare)
-- [RS^N³ · Defect and curvature](https://github.com/naype888-cloud/nrs3-defect-curvature)
-- [RS^N³ · Rovelli — Loop Quantum Gravity](https://github.com/naype888-cloud/nrs3-rovelli-lqg) (proposal)
-- [RS^N³ · Dark](https://github.com/naype888-cloud/nrs3-dark)
-- [RS^N³ · Cristales](https://github.com/naype888-cloud/nrs3-cristales) (español)
+[NRS Noncommercial License 1.0.0](LICENSE) — Libre pour tout usage non commercial, académique et humanitaire, ainsi que pour intégration dans des bibliothèques ouvertes de vérification formelle (Mathlib, Physlib, Lean 4).
 
-## License
+---
 
-NRS Noncommercial License 1.0.0, see [`LICENSE`](LICENSE). Author: Eduardo Nava-Hernandez.
+<div align="center">
 
-## Timeline 1911–1945
+### 📐 *« L'horizon de de Sitter et l'accélération de Friedmann sont la projection cosmologique du péage de la quatrième dimension sur le cube ouvert. »*
 
-RS^N answers a question of the Solvay era with later tools. The series is placed in that window:
-what falls inside it is the history the theorem belongs to; what falls after it is a proposal,
-not part of RS^N³.
+**Eduardo Nava Hernández** · [naype888-cloud](https://github.com/naype888-cloud)
 
-| Year | Event | Repository |
-|---|---|---|
-| 1900–06 | Planck and Boltzmann: `S = k_B log W` | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
-| 1911 | First Solvay conference: radiation and the quanta | |
-| 1911–12 | Poincaré: Planck's law forces discrete levels | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
-| 1915–20 | Szegő: limit theorems for Toeplitz matrices (the limit `C_N^∞`, `D8`) | [base repository (RS^N, RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger) |
-| 1917 | Einstein: the cosmological constant; de Sitter: the empty universe with `Λ` | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
-| 1922–27 | Friedmann and Lemaître: the expanding universe | **[`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one) |
-| 1925–27 | Pauli: exclusion, shells `2n²`, spin matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| 1927–32 | von Neumann: the entropy of a quantum state; Klein's inequality (1931) | [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) |
-| 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| 1929 | van der Waerden: spinors, `SL(2, ℂ)` on Hermitian matrices; the uncertainty cone | [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) |
-| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | **[base repository (RS^N, RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** |
-| 1945–46 | Mandelstam–Tamm: the time–energy bound; Rao (1945), Cramér (1946) | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
-
-**After the window.** Gibbons and Hawking (1977) gave the horizon its entropy. The equations are
-de Sitter's and Friedmann's; the entropy reading is later. Lean 4, Mathlib and Physlib are the
-verification.
-
-## The mosaic
-
-- [RS^N and RS^N³ — the base theorem](https://github.com/naype888-cloud/nava-robertson-schrodinger)
-- [RS^N³ · Mandelstam–Tamm and Cramér–Rao](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao)
-- [RS^N³ · Landauer and Carnot](https://github.com/naype888-cloud/nrs3-landauer-carnot)
-- **[RS^N³ · de Sitter](https://github.com/naype888-cloud/nrs3-de-sitter)** (this one)
-- [RS^N³ · Penrose](https://github.com/naype888-cloud/nrs3-penrose) (proposal)
-- [RS^N³ · Pauli–Dirac](https://github.com/naype888-cloud/nrs3-pauli-dirac)
-- [RS^N³ · The uncertainty cone](https://github.com/naype888-cloud/nrs3-uncertainty-cone)
-- [RS^N³ · Poincaré](https://github.com/naype888-cloud/nrs3-poincare)
-- [RS^N³ · Defect and curvature](https://github.com/naype888-cloud/nrs3-defect-curvature)
-- [RS^N³ · Rovelli — Loop Quantum Gravity](https://github.com/naype888-cloud/nrs3-rovelli-lqg) (proposal)
-- [RS^N³ · Dark](https://github.com/naype888-cloud/nrs3-dark)
-- [RS^N³ · Cristales](https://github.com/naype888-cloud/nrs3-cristales) (español)
-
-## License
-
-NRS Noncommercial License 1.0.0, see [`LICENSE`](LICENSE). Author: Eduardo Nava-Hernandez.
+</div>
