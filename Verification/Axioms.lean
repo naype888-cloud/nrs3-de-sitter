@@ -43,3 +43,16 @@ open HorizonCount
 #print axioms lower_bound_centre
 #print axioms countCosmologicalConstant_pos
 #print axioms tendsto_countCosmologicalConstant
+
+open CubeHorizon
+
+#print axioms cubeEntropy_eq_area_mul
+#print axioms cubeEntropy_pos
+#print axioms cubeCosmologicalConstant_eq_div_area
+#print axioms cubeCosmologicalConstant_firstOrderFriedmann
+#print axioms cubeCosmologicalConstant_secondOrderFriedmann
+#print axioms sq_hubbleConstant_cubeCosmologicalConstant
+#print axioms cubeCosmologicalConstant_pos
+#print axioms cubeCosmologicalConstant_strictAnti_area
+#print axioms tendsto_cubeCosmologicalConstant_area
+#print axioms cubeVacuumEnergyDensity_eq
