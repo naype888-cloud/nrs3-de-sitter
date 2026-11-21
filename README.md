@@ -46,7 +46,11 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 
 ---
 
-## 📐 Chaîne déductive en cinq étapes
+## 📐 Démonstration constructive en quatre étapes
+
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etapes.png"><img src="assets/claro/plaque_desitter_etapes.png" alt="L'échelle déductive en quatre étapes : de l'horizon cosmologique à l'accélération de Friedmann" width="860"></picture>
+</div>
 
 ### Étape 1 : Géométrie de l'horizon de de Sitter continu (FLRW)
 
@@ -57,40 +61,31 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 
 ---
 
-### Étape 2 : Loi d'aire et équations de Friedmann sur le cube ouvert NRS³
+### Étape 2 : Loi d'aire transverse sur le cube ouvert NRS³
 
-> **Proposition 2.1 (Loi d'aire transverse et accélération de Friedmann).** Sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, la section transverse perpendiculaire à l'axe X englobe dy · dz fibres indépendantes. L'entropie totale satisfait S_cube = (dy · dz) · S_1D, et la constante Λ_cube = 3π / (ℓ² S_cube) résout identiquement les deux équations de Friedmann sous accélération stricte ä/a = H² > 0.
+> **Proposition 2.1 (Loi d'aire transverse et fibres indépendantes).** Sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, la section transverse perpendiculaire à l'axe X englobe dy · dz fibres indépendantes. L'entropie totale satisfait S_cube = (dy · dz) · S_1D, et la constante Λ_cube = 3π / (ℓ² S_cube) résout la géométrie du cube.
 
-*Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeEntropy_eq_area_mul`, `cubeCosmologicalConstant_firstOrderFriedmann`, `cubeCosmologicalConstant_secondOrderFriedmann`, `sq_hubbleConstant_cubeCosmologicalConstant`).  
+*Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeEntropy_eq_area_mul`, `cubeCosmologicalConstant_pos`).  
 *Démonstration :* Composition du produit tensoriel spatial avec la solution de de Sitter de Physlib.
 
 ---
 
-### Étape 3 : Candado de positivité et décroissance vers zéro
+### Étape 3 : Équations de Friedmann et accélération cosmologique
 
-> **Proposition 3.1 (Positivité stricte et absence d'Anti-de Sitter).** La positivité du produit interne hilbertien garantit que le défaut géométrique est toujours positif ou nul. La constante cosmologique du cube est strictement positive (Λ_cube > 0) pour toute boîte finie, et tend vers zéro lorsque l'aire transverse grandit vers l'infini.
+> **Proposition 3.1 (Accélération stricte et premier ordre).** La constante cosmologique Λ_cube résout identiquement les deux équations de Friedmann sous accélération stricte ä/a = H² = Λ c² / 3 > 0, garantissant l'expansion exponentielle accélérée sans singularité.
+
+*Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeCosmologicalConstant_firstOrderFriedmann`, `cubeCosmologicalConstant_secondOrderFriedmann`, `sq_hubbleConstant_cubeCosmologicalConstant`).  
+*Démonstration :* Substitution de la constante cosmologique du cube dans les équations dynamiques de Friedmann.
+
+---
+
+### Étape 4 : Candado de positivité et décroissance asymptotique
+
+> **Proposition 4.1 (Positivité stricte et absence d'Anti-de Sitter).** La positivité du produit interne hilbertien garantit que le défaut géométrique est toujours positif ou nul. La constante cosmologique du cube est strictement positive (Λ_cube > 0) pour toute boîte finie, et tend vers zéro lorsque l'aire transverse grandit vers l'infini.
 
 *Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeCosmologicalConstant_pos`, `cubeCosmologicalConstant_strictAnti_area`, `tendsto_cubeCosmologicalConstant_area`).  
+*Module formel (énergie du vide) :* [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) (`einsteinHilbertLambdaDensity_zero`, `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn`).  
 *Démonstration :* Propriété de positivité de la fonction logarithme sur le nombre de liaisons de coupure.
-
----
-
-### Étape 4 : Densité d'énergie du vide et terme Lagrangien
-
-> **Proposition 4.1 (Énergie de vide induite).** Au point de courbure scalaire nulle, la densité lagrangienne gravitationnelle est l'opposée exacte de la densité d'énergie de vide ρ_Λ c² = 3c⁴ / (8G ℓ² S_cube), strictement décroissante avec l'entropie.
-
-*Module formel :* [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) (`einsteinHilbertLambdaDensity_zero`, `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn`).  
-*Démonstration :* Évaluation ponctuelle de la densité d'Einstein–Hilbert avec constante cosmologique fixée par l'entropie.
-
----
-
-### Étape 5 : La rupture d = 4 et la condition d'état sur le cube
-
-> **Proposition 5.1 (Rupture dimensionnelle et déterminant de Robertson).** En dimension purement spatiale d ≤ 3, le défaut s'annule (C_N = 1). À partir de d ≥ 4, le défaut volumétrique devient strictement positif. Le déterminant de covariance 6 × 6 satisfait det Σ ≥ floor pour tout état, avec un rapport ((99 − 42√5)/5)³ ≈ 1.0520 à la taille 4 × 4 × 4.
-
-*Module formel (rupture) :* [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) (`blind_below_rupture`, `quantumDefect_pos`).  
-*Module formel (déterminant) :* [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) (`floor_eq`, `det_eq_of_two_three`, `floor_lt_det_of_four_le`, `det_four`).  
-*Démonstration :* Déterminant de Gram sur le produit tensoriel des trois paires canoniques (T_d, P_d).
 
 ---
 
