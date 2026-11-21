@@ -6,9 +6,9 @@
 **Eduardo Nava Hernández**  
 *Vérification formelle certifiée en Lean 4 · 0 sorry · Physlib (Cosmology.FLRW)*
 
-[![Lean 4](https://img.shields.io/badge/Lean_4-v4.34.0-blue.svg?style=flat-square)](https://leanprover.github.io/)
-[![Mathlib](https://img.shields.io/badge/Mathlib-v4.34.0-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
-[![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry%20%7C%20ZFC-brightgreen.svg?style=flat-square)]()
+[![Lean 4](https://img.shields.io/badge/Lean_4-v4.35.0-blue.svg?style=flat-square)](https://leanprover.github.io/)
+[![Mathlib](https://img.shields.io/badge/Mathlib-vérifié-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
+[![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry%20%7C%20ZFC-brightgreen.svg?style=flat-square)](Verification/Axioms.lean)
 [![Physlib](https://img.shields.io/badge/Physlib-Cosmology.FLRW-brightgreen.svg?style=flat-square)](https://github.com/leanprover-community/physlib)
 [![Simulateur](https://img.shields.io/badge/Portail-de_Sitter_Interactif-00e5ff.svg?style=for-the-badge)](https://naype888-cloud.github.io/nrs3-de-sitter/)
 
@@ -21,7 +21,7 @@
 > La constante cosmologique Λ n'est pas un paramètre externe ad hoc : elle émerge comme le péage géométrique de la quatrième dimension couplé au transport causal sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz.
 >
 > <div align="center">
-> <img src="assets/plaque_desitter_master.png" alt="Plaque maîtresse : la constante cosmologique de Sitter et les équations de Friedmann sur le cube ouvert" width="860">
+> <picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_master.png"><img src="assets/claro/plaque_desitter_master.png" alt="Plaque maîtresse : la constante cosmologique de Sitter et les équations de Friedmann sur le cube ouvert" width="860"></picture>
 > </div>
 >
 > **1 · Loi d'aire discrète.** La section transverse du cube ouvert déploie dy · dz fibres indépendantes : l'entropie de coupure satisfait rigoureusement S_cube = (dy · dz) · S_1D.
