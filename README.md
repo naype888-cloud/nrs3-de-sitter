@@ -56,6 +56,8 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 
 > **Proposition 1.1 (Aire et rayon de Hubble).** L'horizon cosmologique de la solution de de Sitter a pour rayon r_H = c / |H| = √(3/Λ) et pour aire A = 12π/Λ. L'entropie d'horizon de Gibbons–Hawking S = A / (4ℓ²) fixe la constante cosmologique selon Λ = 3π / (ℓ² S).
 
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etape1.png"><img src="assets/claro/plaque_desitter_etape1.png" alt="Étape 1 : Géométrie de l'horizon de de Sitter continu (FLRW)" width="860"></picture></div>
+
 *Module formel :* [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) (`deSitterHorizonArea_eq`, `deSitterHorizonRadius_eq_div_abs_hubbleConstant`, `cosmologicalConstant_eq_of_deSitterEntropy`).  
 *Démonstration :* Dérive directement de la métrique FLRW sous constante de Hubble stationnaire.
 
@@ -64,6 +66,8 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 ### Étape 2 : Loi d'aire transverse sur le cube ouvert NRS³
 
 > **Proposition 2.1 (Loi d'aire transverse et fibres indépendantes).** Sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, la section transverse perpendiculaire à l'axe X englobe dy · dz fibres indépendantes. L'entropie totale satisfait S_cube = (dy · dz) · S_1D, et la constante Λ_cube = 3π / (ℓ² S_cube) résout la géométrie du cube.
+
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etape2.png"><img src="assets/claro/plaque_desitter_etape2.png" alt="Étape 2 : Loi d'aire transverse sur le cube ouvert NRS³" width="860"></picture></div>
 
 *Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeEntropy_eq_area_mul`, `cubeCosmologicalConstant_pos`).  
 *Démonstration :* Composition du produit tensoriel spatial avec la solution de de Sitter de Physlib.
@@ -74,6 +78,8 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 
 > **Proposition 3.1 (Accélération stricte et premier ordre).** La constante cosmologique Λ_cube résout identiquement les deux équations de Friedmann sous accélération stricte ä/a = H² = Λ c² / 3 > 0, garantissant l'expansion exponentielle accélérée sans singularité.
 
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etape3.png"><img src="assets/claro/plaque_desitter_etape3.png" alt="Étape 3 : Équations de Friedmann et accélération cosmologique" width="860"></picture></div>
+
 *Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeCosmologicalConstant_firstOrderFriedmann`, `cubeCosmologicalConstant_secondOrderFriedmann`, `sq_hubbleConstant_cubeCosmologicalConstant`).  
 *Démonstration :* Substitution de la constante cosmologique du cube dans les équations dynamiques de Friedmann.
 
@@ -82,6 +88,8 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 ### Étape 4 : Candado de positivité et décroissance asymptotique
 
 > **Proposition 4.1 (Positivité stricte et absence d'Anti-de Sitter).** La positivité du produit interne hilbertien garantit que le défaut géométrique est toujours positif ou nul. La constante cosmologique du cube est strictement positive (Λ_cube > 0) pour toute boîte finie, et tend vers zéro lorsque l'aire transverse grandit vers l'infini.
+
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etape4.png"><img src="assets/claro/plaque_desitter_etape4.png" alt="Étape 4 : Candado de positivité et décroissance asymptotique" width="860"></picture></div>
 
 *Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeCosmologicalConstant_pos`, `cubeCosmologicalConstant_strictAnti_area`, `tendsto_cubeCosmologicalConstant_area`).  
 *Module formel (énergie du vide) :* [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) (`einsteinHilbertLambdaDensity_zero`, `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn`).  
