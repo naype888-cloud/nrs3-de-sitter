@@ -1,7 +1,7 @@
 <div align="center">
 
 # RS³ · de Sitter : la constante cosmologique sur le cube ouvert
-### Loi d'aire discrète sur ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, accélération de Friedmann et candado de positivité
+### Loi d'aire discrète sur ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, accélération de Friedmann et verrou de positivité
 
 **Eduardo Nava Hernández**  
 *Vérification formelle certifiée en Lean 4 · 0 sorry · Physlib (Cosmology.FLRW)*
@@ -28,7 +28,7 @@
 >
 > **2 · Équations de Friedmann vérifiées.** La constante induite Λ_cube = 3π / (ℓ² S_cube) résout exactement les deux équations de Friedmann de FLRW sous accélération positive stricte ä/a = H² > 0.
 >
-> **3 · Candado de positivité algébrique.** La positivité de la norme hilbertienne ⟨ψ|ψ⟩ ≥ 0 interdit tout défaut négatif : la constante cosmologique est strictement positive (Λ_cube > 0), excluant toute géométrie Anti-de Sitter.
+> **3 · Verrou de positivité algébrique.** La positivité de la norme hilbertienne ⟨ψ|ψ⟩ ≥ 0 interdit tout défaut négatif : la constante cosmologique est strictement positive (Λ_cube > 0), excluant toute géométrie Anti-de Sitter.
 >
 > **4 · Comportement asymptotique.** Lorsque l'aire transverse grandit vers l'infini, Λ_cube décroît strictement vers 0, limite asymptotique qu'aucun cube fini ne peut atteindre.
 
@@ -85,33 +85,15 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 
 ---
 
-### Étape 4 : Candado de positivité et décroissance asymptotique
+### Étape 4 : Verrou de positivité et décroissance asymptotique
 
 > **Proposition 4.1 (Positivité stricte et absence d'Anti-de Sitter).** La positivité du produit interne hilbertien garantit que le défaut géométrique est toujours positif ou nul. La constante cosmologique du cube est strictement positive (Λ_cube > 0) pour toute boîte finie, et tend vers zéro lorsque l'aire transverse grandit vers l'infini.
 
-<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etape4.png"><img src="assets/claro/plaque_desitter_etape4.png" alt="Étape 4 : Candado de positivité et décroissance asymptotique" width="860"></picture></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_etape4.png"><img src="assets/claro/plaque_desitter_etape4.png" alt="Étape 4 : Verrou de positivité et décroissance asymptotique" width="860"></picture></div>
 
 *Module formel :* [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) (`cubeCosmologicalConstant_pos`, `cubeCosmologicalConstant_strictAnti_area`, `tendsto_cubeCosmologicalConstant_area`).  
 *Module formel (énergie du vide) :* [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) (`einsteinHilbertLambdaDensity_zero`, `vacuumEnergyDensity_entropyCosmologicalConstant`, `vacuumEnergyDensity_entropyCosmologicalConstant_strictAntiOn`).  
 *Démonstration :* Propriété de positivité de la fonction logarithme sur le nombre de liaisons de coupure.
-
----
-
-## 🔬 Catalogue des modules formels
-
-| Fichier Lean | Théorème principal | Portée mathématique | Statut |
-|:---|:---|:---|:---:|
-| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeEntropy_eq_area_mul` | Loi d'aire transverse sur le cube ouvert 3D | **0 sorry** |
-| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_firstOrderFriedmann` | Première équation de Friedmann résolue | **0 sorry** |
-| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_secondOrderFriedmann` | Deuxième équation de Friedmann (ä > 0) | **0 sorry** |
-| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_pos` | Candado de positivité (Λ > 0 strict) | **0 sorry** |
-| [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) | `deSitterHorizonArea_eq` | Aire A = 12π/Λ et rayon de Hubble r_H | **0 sorry** |
-| [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) | `cosmologicalConstant_eq_of_deSitterEntropy` | Inversion exacte Λ = 3π / (ℓ² S) | **0 sorry** |
-| [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) | `vacuumEnergyDensity_entropyCosmologicalConstant` | Densité d'énergie de vide ρ_Λ c² | **0 sorry** |
-| [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) | `numCross_eq` | Nombre de liaisons transverses M | **0 sorry** |
-| [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) | `blind_below_rupture` | Annulation du défaut en d ≤ 3 | **0 sorry** |
-| [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) | `floor_eq` | Plancher de Robertson du cube 3D | **0 sorry** |
-| [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) | `det_four` | Excès de déterminant à la taille 4 × 4 × 4 | **0 sorry** |
 
 ---
 
@@ -125,6 +107,24 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 | **#1718** | `TightBindingChain/Saturation` | Égalité de Robertson–Schrödinger ssi d ≤ 3 | **MERGED** |
 | **#1734** | `TightBindingChain/LongChainLimit` | Convergence vers la limite de Szegő | **MERGED** |
 | **#1735** | `TightBindingChain/LongChainMonotonicity` | Monotonie stricte de C_N dès d ≥ 4 | **MERGED** |
+
+---
+
+## 🔬 Catalogue des modules formels
+
+| Fichier Lean | Théorème principal | Portée mathématique | Statut |
+|:---|:---|:---|:---:|
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeEntropy_eq_area_mul` | Loi d'aire transverse sur le cube ouvert 3D | **0 sorry** |
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_firstOrderFriedmann` | Première équation de Friedmann résolue | **0 sorry** |
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_secondOrderFriedmann` | Deuxième équation de Friedmann (ä > 0) | **0 sorry** |
+| [`NRS3DeSitter/CubeHorizon.lean`](NRS3DeSitter/CubeHorizon.lean) | `cubeCosmologicalConstant_pos` | Verrou de positivité (Λ > 0 strict) | **0 sorry** |
+| [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) | `deSitterHorizonArea_eq` | Aire A = 12π/Λ et rayon de Hubble r_H | **0 sorry** |
+| [`NRS3DeSitter/DeSitterHorizon.lean`](NRS3DeSitter/DeSitterHorizon.lean) | `cosmologicalConstant_eq_of_deSitterEntropy` | Inversion exacte Λ = 3π / (ℓ² S) | **0 sorry** |
+| [`NRS3DeSitter/VacuumLagrangian.lean`](NRS3DeSitter/VacuumLagrangian.lean) | `vacuumEnergyDensity_entropyCosmologicalConstant` | Densité d'énergie de vide ρ_Λ c² | **0 sorry** |
+| [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) | `numCross_eq` | Nombre de liaisons transverses M | **0 sorry** |
+| [`NRS3DeSitter/HorizonCount.lean`](NRS3DeSitter/HorizonCount.lean) | `blind_below_rupture` | Annulation du défaut en d ≤ 3 | **0 sorry** |
+| [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) | `floor_eq` | Plancher de Robertson du cube 3D | **0 sorry** |
+| [`NRS3DeSitter/StateCondition.lean`](NRS3DeSitter/StateCondition.lean) | `det_four` | Excès de déterminant à la taille 4 × 4 × 4 | **0 sorry** |
 
 ---
 
