@@ -1,3 +1,5 @@
+<div lang="fr">
+
 <div align="center">
 
 # RS³ · de Sitter : la constante cosmologique sur le cube ouvert
@@ -18,7 +20,7 @@
 
 > ### 🏛️ Ce qui distingue le théorème et la constante cosmologique du cube
 >
-> La constante cosmologique Λ n'est pas un paramètre externe ad hoc : elle émerge comme le péage géométrique de la quatrième dimension couplé au transport causal sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz.
+> La constante cosmologique Λ n'est pas un paramètre externe ad hoc : elle émerge comme le seuil spectral géométrique de la quatrième dimension couplé au transport causal sur le cube ouvert ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz.
 >
 > <div align="center">
 > <picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_desitter_master.png"><img src="assets/claro/plaque_desitter_master.png" alt="Plaque maîtresse : la constante cosmologique de Sitter et les équations de Friedmann sur le cube ouvert" width="860"></picture>
@@ -128,21 +130,26 @@ Ce dépôt établit la théorie constructive de l'horizon de de Sitter et des é
 
 ---
 
-## 🏛️ Le Mosaïque des développements satellites
+## 🏛️ La mosaïque
 
-| Dépôt | Thématique et objet central |
+| Dépôt | Objet |
 |:---|:---|
-| [**`nava-robertson-schrodinger`**](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Théorème de base : chaîne 1D, cube NRS³ et monotonie de C_N |
-| [**`nrs3-de-sitter`**](https://github.com/naype888-cloud/nrs3-de-sitter) | La constante cosmologique sur le cube ouvert et les équations de Friedmann (ce dépôt) |
-| [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Borne temporelle orthogonale et efficacité de Cramér–Rao |
-| [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Coût de dissipation thermodynamique et limite de Carnot |
-| [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | Matrices de spin de Pauli et représentations de Clifford |
-| [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | Géométrie de Minkowski induite par la matrice de Gram |
-| [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Quantification discrète selon Poincaré (1912) |
-| [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | Quanta de courbure sur surfaces fermées |
-| [`nrs3-dark`](https://github.com/naype888-cloud/nrs3-dark) | Part non résolue par la lumière et fraction volumétrique |
-| [`nrs3-cube`](https://github.com/naype888-cloud/nrs3-cube) | Le cube ouvert multidimensionnel généralisé |
-
+| [`00 · bacqm-substrate`](https://github.com/naype888-cloud/bacqm-systems) | Substrat matériel & moteur du noyau Linux : modules de mémoire dynamiques en temps réel |
+| [`01 · nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Le canon : l'incertitude élémentaire dimensionnelle sur le cube ouvert, ℂᵈ ⊗ ℂᵈ ⊗ ℂᵈ |
+| [`02 · Proper-Time-General-Relativity`](https://github.com/naype888-cloud/Proper-Time-General-Relativity) | Le temps compte les pas : τ = 1/(φ|t|) à quatre sites ; masse effective, équivalence, gravitation |
+| [`03 · nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Mandelstam–Tamm et Cramér–Rao : aucun état n'est orthogonal à lui-même avant πħ/(2ΔE) |
+| [`04 · YM-By-Perelmans-surgery-method`](https://github.com/naype888-cloud/YM-By-Perelmans-surgery-method) | Yang–Mills sur réseau : loi d'aire uniforme, matrice de transfert, défaut de fibre (0 sorry) |
+| [`05 · nrs3-tightbinding`](https://github.com/naype888-cloud/nrs3-tightbinding) | La chaîne de Physlib, le cube ouvert et la table périodique (H–Og), un cube 3D par élément |
+| [`06 · nrs3-cristales`](https://github.com/naype888-cloud/nrs3-cristales) | Cristaux : la symétrie donne la forme de Σ et Ω, le spectre donne la taille |
+| [`07 · nrs3-completude`](https://github.com/naype888-cloud/nrs3-completude) | Complétude constructive et limites spectrales par Robertson–Fiedler–Niven–Szegő |
+| [`08 · nrs3-golab`](https://github.com/naype888-cloud/nrs3-golab) | Gołąb, les deux extrêmes : π = 3 (hexagone), 4 (carré) ; produit scalaire → π exact ; stabilité en d = 3 |
+| [**09 · nrs3-de-sitter**](https://github.com/naype888-cloud/nrs3-de-sitter) | Cosmologie de Sitter : rayon d'horizon L_dS, constante cosmologique positive et courbure *(ce dépôt)* |
+| [`10 · nrs3-bekenstein`](https://github.com/naype888-cloud/nrs3-bekenstein) | Thermodynamique des trous noirs : frontière à bits, entropie de Bekenstein–Hawking saturée |
+| [`11 · nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Limite de Landauer et cycle de Carnot : coût d'effacement d'un bit et dissipation minimale |
+| [`12 · nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Effondrement gravitationnel de Diósi–Penrose : temps de décohérence par auto-énergie |
+| [`13 · nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | Gravité quantique à boucles : spectre d'aire discrète, opérateur de surface et saturation de spin |
+| [`14 · nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | Cône de lumière futur et cercle de Minkowski : structure causale sous revêtement SL(2, ℂ) |
+| [`15 · lean4-commits`](https://github.com/naype888-cloud/lean4-commits) | 53 PRs fusionnées dans leanprover-community/physlib : catalogue de preuves formelles, 0 sorry, ZFC |
 ---
 
 ## ⏱️ Chronologie historique (1900–1945)
@@ -195,8 +202,10 @@ L'intégralité des théorèmes compile strictement sous les trois axiomes stand
 
 <div align="center">
 
-### 📐 *« L'horizon de de Sitter et l'accélération de Friedmann sont la projection cosmologique du péage de la quatrième dimension sur le cube ouvert. »*
+### 📐 *« L'horizon de de Sitter et l'accélération de Friedmann sont la projection cosmologique du coût spectral de la quatrième dimension sur le cube ouvert. »*
 
 **Eduardo Nava Hernández** · [naype888-cloud](https://github.com/naype888-cloud)
+
+</div>
 
 </div>
