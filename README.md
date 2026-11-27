@@ -2,7 +2,8 @@
 
 <div align="center">
 
-# RS<sup>N</sup>³ · de Sitter : la constante cosmologique sur le cube ouvert
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/titre_de_sitter.png"><img src="assets/claro/titre_de_sitter.png" alt="RS^N³ · de Sitter : la constante cosmologique sur le cube ouvert" width="860"></picture>
+**"RS<sup>N</sup>³ · de Sitter : la constante cosmologique sur le cube ouvert"**
 ### Loi d'aire discrète sur ℋ_dx ⊗ ℋ_dy ⊗ ℋ_dz, accélération de Friedmann et verrou de positivité
 
 **Eduardo Nava Hernández**  
